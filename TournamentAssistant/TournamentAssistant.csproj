@@ -77,6 +77,9 @@
 	<ItemGroup>
 		<Compile Include="Connection.cs"/>
 		<Compile Include="Loader.cs"/>
+		<Compile Include="Messages\Incoming.cs"/>
+		<Compile Include="Messages\MessageHandler.cs"/>
+		<Compile Include="Messages\Outgoing.cs"/>
 		<Compile Include="Patches.cs"/>
 		<Compile Include="TournamentAssistant.cs"/>
 		<Compile Include="Properties\AssemblyInfo.cs"/>
@@ -85,10 +88,10 @@
 		<None Include="packages.config"/>
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\Messages\Messages.csproj">
-	    <Project>{0c79a92e-e554-4cc5-bc82-cfde4693d597}</Project>
-	    <Name>Messages</Name>
-	  </ProjectReference>
+		<ProjectReference Include="..\Messages\Messages.csproj">
+			<Project>{0c79a92e-e554-4cc5-bc82-cfde4693d597}</Project>
+			<Name>Messages</Name>
+		</ProjectReference>
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
 	<PropertyGroup>

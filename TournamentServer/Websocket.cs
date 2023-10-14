@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using TournamentServer.Handlers;
+using TournamentServer.Routes;
 using WebSocketSharp.Server;
 
 namespace TournamentServer
@@ -10,11 +10,11 @@ namespace TournamentServer
 		public IPAddress IPAddress { get; }
 		public int Port { get; }
 
-		public Websocket(string ip = "127.0.0.1:8080")
+		public Websocket(string ip)
 		{
 			var ws = new WebSocketServer($"ws://{ip}");
 
-			ws.AddWebSocketService<MessageHandler>("/");
+			ws.AddWebSocketService<MainRoute>("/");
 
 			ws.Start();
 			IPAddress = ws.Address;

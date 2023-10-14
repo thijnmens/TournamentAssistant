@@ -19,6 +19,44 @@ namespace TournamentServer
 
 			Console.Clear();
 
+			WriteBanner();
+
+			var ip = "127.0.0.1";
+			var port = "8080";
+			if (args.Contains("--ip")) ip = args[args.ToList().IndexOf("--ip") + 1];
+			if (args.Contains("--port")) port = args[args.ToList().IndexOf("--port") + 1];
+
+			var websocket = new Websocket($"{ip}:{port}");
+			stopwatch.Stop();
+
+			WriteServerInfo(stopwatch.ElapsedMilliseconds.ToString(), websocket.IPAddress.ToString(), websocket.Port.ToString());
+
+			while (true)
+			{
+				var key = Console.ReadKey(true);
+				switch (key.KeyChar)
+				{
+					case 'h':
+						WriteHelp();
+						break;
+
+					case 'l':
+						WriteConnections();
+						break;
+
+					case 'q':
+						goto exit_loop;
+				}
+
+				Console.WriteLine();
+			}
+
+			exit_loop:
+			Console.WriteLine("Closing server...");
+		}
+
+		private static void WriteBanner()
+		{
 			// ########################################################################################################################
 			// #                                             Tournament Assistant Server                                              #
 			// #                                                                                                                      #
@@ -36,41 +74,48 @@ namespace TournamentServer
 				$"{Bright.Black("#")}  Version {Green(FileVersionInfo.GetVersionInfo(Assembly.GetAssembly(typeof(Server)).Location).FileVersion)}{new string(' ', Console.WindowWidth - 19)}{Bright.Black("#")}");
 			Console.WriteLine(Bright.Black(new string('#', Console.WindowWidth)));
 			Console.WriteLine();
+		}
 
-			var websocket = new Websocket();
-			if (args.Contains("--ip")) websocket = new Websocket(args[args.ToList().IndexOf("--ip") + 1]);
-			stopwatch.Stop();
-			Console.WriteLine($"Server Started in {Green(stopwatch.ElapsedMilliseconds.ToString())}ms");
+		private static void WriteServerInfo(string startupTime, string ipAdress, string port)
+		{
+			WriteInfo("This is an info message");
+			WriteWarning("This is a warning message");
+			WriteError("This is an error message");
+			Console.WriteLine("");
+			Console.WriteLine($"Server Started in {Green(startupTime)}ms");
 			Console.WriteLine(
-				$"Server is listening on {Underline(Red($"ws://{websocket.IPAddress}:{websocket.Port}"))}");
+				$"Server is listening on {Underline(Red($"ws://{ipAdress}:{port}"))}");
 			Console.WriteLine($"Press {Underline(Bold("h"))} for help");
+		}
 
-			while (true)
-			{
-				var key = Console.ReadKey(true);
-				switch (key.KeyChar)
-				{
-					case 'h':
-						Console.WriteLine($"\n{Bright.Blue("help")}");
-						Console.WriteLine($"{Green("#")} {Red("h")} for help");
-						Console.WriteLine($"{Green("#")} {Red("q")} to exit");
-						Console.WriteLine($"{Green("#")} {Red("l")} to list connections");
-						Console.WriteLine();
-						break;
+		private static void WriteHelp()
+		{
+			Console.WriteLine($"\n{Bright.Blue("help")}");
+			Console.WriteLine($"{Green("#")} {Red("h")} for help");
+			Console.WriteLine($"{Green("#")} {Red("q")} to exit");
+			Console.WriteLine($"{Green("#")} {Red("l")} to list connections");
+		}
 
-					case 'l':
-						Console.WriteLine($"\n{Bright.Blue("Connections")}");
-						Connections.ForEach(connection => { Console.WriteLine($"{Green("#")} {Red(connection)}"); });
-						Console.WriteLine();
-						break;
+		private static void WriteConnections()
+		{
+			Console.WriteLine($"\n{Bright.Blue("Connections")}");
+			Connections.ForEach(connection => { Console.WriteLine($"{Green("#")} {Red(connection)}"); });
+			Console.WriteLine();
+		}
 
-					case 'q':
-						goto exit_loop;
-				}
-			}
+		public static void WriteInfo(string message)
+		{
+			Console.WriteLine($"{Green("~")} {message}");
+		}
 
-			exit_loop: ;
-			Console.WriteLine("Closing server...");
+		public static void WriteWarning(string message)
+		{
+			Console.WriteLine($"{Yellow("!")} {Bright.Yellow(message)}");
+		}
+
+		public static void WriteError(string message)
+		{
+			Console.WriteLine($"{Red("!!!")} {Bright.Red(message)}");
 		}
 	}
 }

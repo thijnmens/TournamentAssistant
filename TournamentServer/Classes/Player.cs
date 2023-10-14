@@ -1,5 +1,4 @@
-﻿using Messages;
-using TournamentServer.Handlers;
+﻿using System;
 
 namespace TournamentServer.Classes
 {
@@ -14,7 +13,7 @@ namespace TournamentServer.Classes
 
 		public void Kick()
 		{
-			MessageHandler.Instance.SendMessage(Message.KICK);
+			throw new NotImplementedException();
 		}
 	}
 }

@@ -1,5 +1,8 @@
 ﻿using HarmonyLib;
 
+// ReSharper disable UnusedType.Local
+// ReSharper disable UnusedMember.Local
+
 namespace TournamentAssistant
 {
 	internal class Patches

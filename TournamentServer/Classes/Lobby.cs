@@ -5,7 +5,7 @@ namespace TournamentServer.Classes
 {
 	public class Lobby
 	{
-		public List<Player> Players { get; }
+		private List<Player> Players { get; }
 		public int Code { get; }
 
 		public Lobby(int code)
@@ -18,6 +18,11 @@ namespace TournamentServer.Classes
 		{
 			var player = Players.First(p => p.Username == username);
 			player.Kick();
+		}
+
+		public void JoinLobby(Player player)
+		{
+			Players.Add(player);
 		}
 	}
 }
