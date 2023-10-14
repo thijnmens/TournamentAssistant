@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Net;
-using System.Net.Sockets;
 using System.Reflection;
+using Messages;
+using Steamworks;
 using WebSocketSharp;
 
 namespace TournamentAssistant
@@ -17,48 +17,101 @@ namespace TournamentAssistant
 			TournamentAssistant.ModEntry.Logger.Log($"Attempting to join {url}");
 			Ws = new WebSocket($"ws://{url}");
 
-			string localIP;
-			using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
-			{
-				socket.Connect("8.8.8.8", 65530);
-				var endPoint = socket.LocalEndPoint as IPEndPoint;
-				localIP = endPoint?.Address.ToString();
-			}
-
 			Ws.Connect();
-			Ws.SendAsync($"NEW_CONNECTION: new connection from {localIP}", _ => { });
+			SendMessage(Message.NEW_CONNECTION);
 
 			Ws.OnMessage += OnMessage;
 		}
 
-		~Connection()
+		private void OnMessage(object sender, MessageEventArgs messageEventArgs)
 		{
+			var messageType = messageEventArgs.Data.Split(':')[0];
+			var arg = messageEventArgs.Data.Split(new[] { ':' }, 2)[1];
+
+			if (Enum.TryParse(messageType, out Message message)) SendMessage(Message.UNKNOWN_MESSAGE);
+			
+			switch (message)
+			{
+				// Messages with response
+				case Message.PING:
+				case Message.VERSION:
+				case Message.CLOSE_CONNECTION:
+				case Message.PLAYER_INFO:
+				case Message.KICK:
+					SendMessage(message);
+					return;
+				
+				// Messages without response
+				case Message.CONNECTION_ACCEPTED:
+					TournamentAssistant.ModEntry.Logger.Log($"Successfully connected to {Ws.Url}");
+					return;
+				
+				// Unused messages
+				case Message.NEW_LOBBY:
+				case Message.NEW_CONNECTION:
+					SendMessage(Message.UNUSED_MESSAGE);
+					return;
+
+				// Error messages
+				case Message.UNUSED_MESSAGE:
+				case Message.UNKNOWN_MESSAGE:
+				default:
+					TournamentAssistant.ModEntry.Logger.Error($"Unknown message:'{messageEventArgs.Data}'");
+					return;
+			}
+		}
+
+		public void OnApplicationQuit()
+		{
+			SendMessage(Message.CLOSE_CONNECTION);
 			Ws.Close();
 		}
 
-		private void OnMessage(object sender, MessageEventArgs messageEventArgs)
+		private void SendMessage(Message message, string arg = "")
 		{
-			switch (messageEventArgs.Data.Split(':')[0])
+			switch (message)
 			{
-				case "PING":
-					Ws.SendAsync("pong!", b => { });
-					break;
+				case Message.NEW_CONNECTION:
+					Send($"NEW_CONNECTION:{SteamFriends.GetPersonaName()}");
+					return;
 
-				case "VERSION":
-					Ws.SendAsync(
-						FileVersionInfo.GetVersionInfo(Assembly.GetAssembly(typeof(TournamentAssistant)).Location)
-							.FileVersion,
-						b => { });
-					break;
+				case Message.CLOSE_CONNECTION:
+					Send($"CLOSE_CONNECTION:{SteamFriends.GetPersonaName()}");
+					return;
+
+				case Message.KICK:
+					SendMessage(Message.CLOSE_CONNECTION);
+					Ws.Close();
+					return;
 				
-				case "CONNECTION_ACCEPTED":
-					TournamentAssistant.ModEntry.Logger.Log($"Successfully connected to {Ws.Url}");
-					break;
+				case Message.PLAYER_INFO:
+					
+					return;
 
+				case Message.PING:
+					return;
+				
+					return;
+				
+				case Message.VERSION:
+					Send(FileVersionInfo.GetVersionInfo(Assembly.GetAssembly(typeof(TournamentAssistant)).Location).FileVersion);
+					return;
+				
+				case Message.NEW_LOBBY:
+				case Message.CONNECTION_ACCEPTED:
+				case Message.UNUSED_MESSAGE:
+					return;
+				
+				case Message.UNKNOWN_MESSAGE:
 				default:
-					TournamentAssistant.ModEntry.Logger.Error($"Unknown message: {messageEventArgs.Data}");
-					throw new ArgumentException($"Unknown message: {messageEventArgs.Data}");
+					Send($"UNKNOWN_MESSAGE:{arg}");
+					return;
 			}
+		}
+
+		private void Send(string message)
+		{
+			Ws.SendAsync(message, _ => { });
 		}
 	}
 }

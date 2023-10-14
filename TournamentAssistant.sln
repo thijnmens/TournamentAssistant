@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoordApp", "CoordApp\CoordA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TournamentServer", "TournamentServer\TournamentServer.csproj", "{D2BD235D-58E6-4ACD-9DDD-4C84BCE16992}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messages", "Messages\Messages.csproj", "{0C79A92E-E554-4CC5-BC82-CFDE4693D597}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{D2BD235D-58E6-4ACD-9DDD-4C84BCE16992}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2BD235D-58E6-4ACD-9DDD-4C84BCE16992}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2BD235D-58E6-4ACD-9DDD-4C84BCE16992}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C79A92E-E554-4CC5-BC82-CFDE4693D597}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C79A92E-E554-4CC5-BC82-CFDE4693D597}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C79A92E-E554-4CC5-BC82-CFDE4693D597}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C79A92E-E554-4CC5-BC82-CFDE4693D597}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

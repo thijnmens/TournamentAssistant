@@ -10,6 +10,9 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.drawio
+*.bkp
+*.dtmp
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

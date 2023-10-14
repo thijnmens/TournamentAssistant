@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -9,6 +10,7 @@ namespace TournamentServer
 {
 	internal class Server
 	{
+		public static List<string> Connections { get; } = new List<string>();
 
 		public static void Main(string[] args)
 		{
@@ -35,11 +37,8 @@ namespace TournamentServer
 			Console.WriteLine(Bright.Black(new string('#', Console.WindowWidth)));
 			Console.WriteLine();
 
-			var websocket = new Websocket();;
-			if (args.Contains("--ip"))
-			{
-				websocket = new Websocket(args[args.ToList().IndexOf("--ip") + 1]);
-			}
+			var websocket = new Websocket();
+			if (args.Contains("--ip")) websocket = new Websocket(args[args.ToList().IndexOf("--ip") + 1]);
 			stopwatch.Stop();
 			Console.WriteLine($"Server Started in {Green(stopwatch.ElapsedMilliseconds.ToString())}ms");
 			Console.WriteLine(
@@ -58,6 +57,13 @@ namespace TournamentServer
 						Console.WriteLine($"{Green("#")} {Red("l")} to list connections");
 						Console.WriteLine();
 						break;
+
+					case 'l':
+						Console.WriteLine($"\n{Bright.Blue("Connections")}");
+						Connections.ForEach(connection => { Console.WriteLine($"{Green("#")} {Red(connection)}"); });
+						Console.WriteLine();
+						break;
+
 					case 'q':
 						goto exit_loop;
 				}

@@ -55,7 +55,7 @@
 		<Compile Include="Program.cs"/>
 		<Compile Include="Properties\AssemblyInfo.cs"/>
 		<EmbeddedResource Include="Main.resx">
-		  <DependentUpon>Main.cs</DependentUpon>
+			<DependentUpon>Main.cs</DependentUpon>
 		</EmbeddedResource>
 		<EmbeddedResource Include="Properties\Resources.resx">
 			<Generator>ResXFileCodeGenerator</Generator>
@@ -78,6 +78,12 @@
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="App.config"/>
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Messages\Messages.csproj">
+	    <Project>{0c79a92e-e554-4cc5-bc82-cfde4693d597}</Project>
+	    <Name>Messages</Name>
+	  </ProjectReference>
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
 </Project>

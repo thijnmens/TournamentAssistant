@@ -43,9 +43,9 @@
 			this.L_Time = new System.Windows.Forms.Label();
 			this.P_Divider = new System.Windows.Forms.Panel();
 			this.TLP_Players = new System.Windows.Forms.TableLayoutPanel();
+			this.B_Kick = new System.Windows.Forms.Button();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.L_playerName = new System.Windows.Forms.Label();
-			this.B_Kick = new System.Windows.Forms.Button();
 			this.TLP_Buttons.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.PB_MapImage)).BeginInit();
 			this.TLP_Players.SuspendLayout();
@@ -207,8 +207,22 @@
 			this.TLP_Players.Name = "TLP_Players";
 			this.TLP_Players.RowCount = 1;
 			this.TLP_Players.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.TLP_Players.Size = new System.Drawing.Size(951, 771);
+			this.TLP_Players.Size = new System.Drawing.Size(950, 771);
 			this.TLP_Players.TabIndex = 9;
+			// 
+			// B_Kick
+			// 
+			this.B_Kick.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+			this.B_Kick.AutoSize = true;
+			this.B_Kick.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.B_Kick.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+			this.B_Kick.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+			this.B_Kick.Location = new System.Drawing.Point(858, 3);
+			this.B_Kick.Name = "B_Kick";
+			this.B_Kick.Size = new System.Drawing.Size(89, 765);
+			this.B_Kick.TabIndex = 10;
+			this.B_Kick.Text = "Kick";
+			this.B_Kick.UseVisualStyleBackColor = false;
 			// 
 			// pictureBox1
 			// 
@@ -236,20 +250,6 @@
 			this.L_playerName.Text = "Thijnmens";
 			this.L_playerName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// B_Kick
-			// 
-			this.B_Kick.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
-			this.B_Kick.AutoSize = true;
-			this.B_Kick.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.B_Kick.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
-			this.B_Kick.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-			this.B_Kick.Location = new System.Drawing.Point(858, 3);
-			this.B_Kick.Name = "B_Kick";
-			this.B_Kick.Size = new System.Drawing.Size(90, 765);
-			this.B_Kick.TabIndex = 10;
-			this.B_Kick.Text = "Kick";
-			this.B_Kick.UseVisualStyleBackColor = false;
-			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 23F);
@@ -269,6 +269,7 @@
 			this.Controls.Add(this.L_Title);
 			this.Font = new System.Drawing.Font("Segoe UI Black", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.ForeColor = System.Drawing.Color.White;
+			this.ImeMode = System.Windows.Forms.ImeMode.Off;
 			this.Margin = new System.Windows.Forms.Padding(6, 4, 6, 4);
 			this.Name = "Main";
 			this.Text = "Tournament Assistant";

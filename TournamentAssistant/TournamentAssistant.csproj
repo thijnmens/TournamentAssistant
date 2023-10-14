@@ -42,6 +42,9 @@
 		<Reference Include="Assembly-CSharp-firstpass">
 			<HintPath>E:\SteamLibrary\steamapps\common\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
 		</Reference>
+		<Reference Include="com.rlabrecque.steamworks.net">
+			<HintPath>E:\SteamLibrary\steamapps\common\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\com.rlabrecque.steamworks.net.dll</HintPath>
+		</Reference>
 		<Reference Include="RDTools">
 			<HintPath>E:\SteamLibrary\steamapps\common\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\RDTools.dll</HintPath>
 		</Reference>
@@ -74,6 +77,7 @@
 	<ItemGroup>
 		<Compile Include="Connection.cs"/>
 		<Compile Include="Loader.cs"/>
+		<Compile Include="Patches.cs"/>
 		<Compile Include="TournamentAssistant.cs"/>
 		<Compile Include="Properties\AssemblyInfo.cs"/>
 	</ItemGroup>
@@ -81,7 +85,10 @@
 		<None Include="packages.config"/>
 	</ItemGroup>
 	<ItemGroup>
-		<Content Include="README.md"/>
+	  <ProjectReference Include="..\Messages\Messages.csproj">
+	    <Project>{0c79a92e-e554-4cc5-bc82-cfde4693d597}</Project>
+	    <Name>Messages</Name>
+	  </ProjectReference>
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
 	<PropertyGroup>
