@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoordApp", "CoordApp\CoordA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TournamentServer", "TournamentServer\TournamentServer.csproj", "{D2BD235D-58E6-4ACD-9DDD-4C84BCE16992}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messages", "Messages\Messages.csproj", "{0C79A92E-E554-4CC5-BC82-CFDE4693D597}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaUtilities", "TaUtilities\TaUtilities.csproj", "{0C79A92E-E554-4CC5-BC82-CFDE4693D597}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

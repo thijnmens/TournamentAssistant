@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using System.Linq;
+using HarmonyLib;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityModManagerNet;
@@ -29,7 +30,19 @@ namespace TournamentAssistant
 			LobbyUrl = GUILayout.TextArea(LobbyUrl);
 			GUILayout.EndVertical();
 			GUILayout.BeginHorizontal();
-			if (GUILayout.Button("Join")) Connection = new Connection(LobbyUrl);
+			if (GUILayout.Button(Connection == null ? "Join" : "Leave"))
+			{
+				if (Connection == null)
+				{
+					var args = LobbyUrl.Split('/');
+					Connection = new Connection(args.First(), int.Parse(args.Last()));
+				}
+				else
+				{
+					Connection?.OnApplicationQuit();
+				}
+			}
+
 			GUILayout.EndHorizontal();
 		}
 	}

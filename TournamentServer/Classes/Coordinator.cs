@@ -2,9 +2,9 @@
 
 namespace TournamentServer.Classes
 {
-	public class Player : IUser
+	public class Coordinator : IUser
 	{
-		public Player(string username, MainService connection)
+		public Coordinator(string username, MainService connection)
 		{
 			Username = username;
 			Connection = connection;

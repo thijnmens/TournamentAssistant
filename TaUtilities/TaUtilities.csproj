@@ -8,8 +8,8 @@
 		<ProjectGuid>{0C79A92E-E554-4CC5-BC82-CFDE4693D597}</ProjectGuid>
 		<OutputType>Library</OutputType>
 		<AppDesignerFolder>Properties</AppDesignerFolder>
-		<RootNamespace>Messages</RootNamespace>
-		<AssemblyName>Messages</AssemblyName>
+		<RootNamespace>TaUtilities</RootNamespace>
+		<AssemblyName>TaUtilities</AssemblyName>
 		<TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
 		<FileAlignment>512</FileAlignment>
 	</PropertyGroup>
@@ -33,14 +33,21 @@
 		<WarningLevel>4</WarningLevel>
 	</PropertyGroup>
 	<ItemGroup>
+		<Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+			<HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+		</Reference>
 		<Reference Include="System"/>
 		<Reference Include="System.Core"/>
 		<Reference Include="System.Data"/>
 		<Reference Include="System.Xml"/>
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Include="JsonConverter.cs"/>
 		<Compile Include="Message.cs"/>
 		<Compile Include="Properties\AssemblyInfo.cs"/>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="packages.config"/>
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
 	<PropertyGroup>

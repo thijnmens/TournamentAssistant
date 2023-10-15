@@ -45,6 +45,9 @@
 		<Reference Include="com.rlabrecque.steamworks.net">
 			<HintPath>E:\SteamLibrary\steamapps\common\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\com.rlabrecque.steamworks.net.dll</HintPath>
 		</Reference>
+		<Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+			<HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+		</Reference>
 		<Reference Include="RDTools">
 			<HintPath>E:\SteamLibrary\steamapps\common\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed\RDTools.dll</HintPath>
 		</Reference>
@@ -77,9 +80,12 @@
 	<ItemGroup>
 		<Compile Include="Connection.cs"/>
 		<Compile Include="Loader.cs"/>
-		<Compile Include="Messages\Incoming.cs"/>
-		<Compile Include="Messages\MessageHandler.cs"/>
-		<Compile Include="Messages\Outgoing.cs"/>
+		<Compile Include="Messages\Connected.cs"/>
+		<Compile Include="Messages\JoinedLobby.cs"/>
+		<Compile Include="Messages\JoinLobby.cs"/>
+		<Compile Include="Messages\UnknownLobby.cs"/>
+		<Compile Include="Messages\UnknownMessage.cs"/>
+		<Compile Include="Messages\UsernameTaken.cs"/>
 		<Compile Include="Patches.cs"/>
 		<Compile Include="TournamentAssistant.cs"/>
 		<Compile Include="Properties\AssemblyInfo.cs"/>
@@ -88,9 +94,9 @@
 		<None Include="packages.config"/>
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\Messages\Messages.csproj">
+		<ProjectReference Include="..\TaUtilities\TaUtilities.csproj">
 			<Project>{0c79a92e-e554-4cc5-bc82-cfde4693d597}</Project>
-			<Name>Messages</Name>
+			<Name>TaUtilities</Name>
 		</ProjectReference>
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
@@ -98,7 +104,8 @@
 		<PostBuildEvent>
 			tasklist /fi "ImageName eq A Dance of Fire and Ice.exe" /fo csv 2&gt;NUL | find /I "A Dance of Fire and Ice.exe"&gt;NUL
 			if "%25ERRORLEVEL%25"=="0" taskkill /IM "A Dance of Fire and Ice.exe" /F
-			copy $(TargetPath) "E:\SteamLibrary\steamapps\common\A Dance of Fire and Ice\Mods\TA" /Y
+			copy "$(TargetPath)" "E:\SteamLibrary\steamapps\common\A Dance of Fire and Ice\Mods\TA" /Y
+			copy "$(TargetDir)Newtonsoft.Json.dll" "E:\SteamLibrary\steamapps\common\A Dance of Fire and Ice\Mods\TA" /Y
 			start steam://rungameid/977950
 		</PostBuildEvent>
 	</PropertyGroup>

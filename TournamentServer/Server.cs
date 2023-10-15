@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using TournamentServer.Services;
 using static Crayon.Output;
 
 
@@ -10,7 +11,7 @@ namespace TournamentServer
 {
 	internal class Server
 	{
-		public static List<string> Connections { get; } = new List<string>();
+		public static Websocket Websocket { get; private set; }
 
 		public static void Main(string[] args)
 		{
@@ -26,10 +27,10 @@ namespace TournamentServer
 			if (args.Contains("--ip")) ip = args[args.ToList().IndexOf("--ip") + 1];
 			if (args.Contains("--port")) port = args[args.ToList().IndexOf("--port") + 1];
 
-			var websocket = new Websocket($"{ip}:{port}");
+			Websocket = new Websocket(ip, port);
 			stopwatch.Stop();
 
-			WriteServerInfo(stopwatch.ElapsedMilliseconds.ToString(), websocket.IPAddress.ToString(), websocket.Port.ToString());
+			WriteServerInfo(stopwatch.ElapsedMilliseconds.ToString(), Websocket.IpAddress, Websocket.Port);
 
 			while (true)
 			{
@@ -41,7 +42,7 @@ namespace TournamentServer
 						break;
 
 					case 'l':
-						WriteConnections();
+						WriteConnections(Websocket.Connections);
 						break;
 
 					case 'q':
@@ -76,7 +77,7 @@ namespace TournamentServer
 			Console.WriteLine();
 		}
 
-		private static void WriteServerInfo(string startupTime, string ipAdress, string port)
+		private static void WriteServerInfo(string startupTime, string ipAddress, string port)
 		{
 			WriteInfo("This is an info message");
 			WriteWarning("This is a warning message");
@@ -84,7 +85,7 @@ namespace TournamentServer
 			Console.WriteLine("");
 			Console.WriteLine($"Server Started in {Green(startupTime)}ms");
 			Console.WriteLine(
-				$"Server is listening on {Underline(Red($"ws://{ipAdress}:{port}"))}");
+				$"Server is listening on {Underline(Red($"ws://{ipAddress}:{port}"))}");
 			Console.WriteLine($"Press {Underline(Bold("h"))} for help");
 		}
 
@@ -96,10 +97,10 @@ namespace TournamentServer
 			Console.WriteLine($"{Green("#")} {Red("l")} to list connections");
 		}
 
-		private static void WriteConnections()
+		private static void WriteConnections(Dictionary<string, MainService> connections)
 		{
 			Console.WriteLine($"\n{Bright.Blue("Connections")}");
-			Connections.ForEach(connection => { Console.WriteLine($"{Green("#")} {Red(connection)}"); });
+			connections.ToList().ForEach(connection => { Console.WriteLine($"{Green("#")} {Red(connection.Value.User.Username)}"); });
 			Console.WriteLine();
 		}
 

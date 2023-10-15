@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Messages;
+using Steamworks;
+using TaUtilities;
 using TournamentAssistant.Messages;
 using WebSocketSharp;
 
@@ -11,86 +12,74 @@ namespace TournamentAssistant
 
 		private WebSocket Ws { get; }
 
-		public Connection(string url)
+		private int LobbyCode { get; }
+
+		public Connection(string url, int lobbyCode)
 		{
-			TournamentAssistant.ModEntry.Logger.Log($"Attempting to join {url}");
-			Ws = new WebSocket($"ws://{url}");
+			TournamentAssistant.ModEntry.Logger.Log($"Attempting to join {url}?type=mod&username={SteamFriends.GetPersonaName()}");
+			Ws = new WebSocket($"ws://{url}?type=mod&username={SteamFriends.GetPersonaName()}");
+			LobbyCode = lobbyCode;
 
-			MessageHandler.WsSendAsync = Ws.SendAsync;
-			MessageHandler.WsSend = Ws.Send;
-
-			Ws.Connect();
-
-			Outgoing.NewConnection();
+			Ws.ConnectAsync();
 
 			Ws.OnMessage += OnMessage;
 		}
 
 
-		private void OnMessage(object sender, MessageEventArgs messageEventArgs)
+		private void OnMessage(object sender, MessageEventArgs e)
 		{
-			var messageType = messageEventArgs.Data.Split(':').First();
-			var arg = messageEventArgs.Data.Split(new[] { ':' }, 2).Last();
-			if (messageType == arg) arg = "";
+			var splitMessage = e.Data.Split(new[] { ':' }, 2);
+			var messageType = splitMessage.First();
+			var data = splitMessage.Last();
 
-			if (Enum.TryParse(messageType, out Message message)) Outgoing.UnknownMessage();
+			if (Enum.TryParse(messageType, out Message message)) throw new ArgumentException();
 
-			string[] args;
 			switch (message)
 			{
-				case Message.NEW_CONNECTION:
-					Incoming.NewConnection();
+				case Message.CONNECTED:
+					Connected.Incoming(Ws.Url.ToString(), LobbyCode);
 					return;
-				case Message.CLOSE_CONNECTION:
-					Incoming.CloseConnection();
+				case Message.JOINED_LOBBY:
+					JoinedLobby.Incoming();
 					return;
-				case Message.CONNECTION_ACCEPTED:
-					Incoming.ConnectionAccepted();
-					return;
-				case Message.CONNECTION_CLOSED:
-					Incoming.ConnectionClosed();
-					return;
-				case Message.PING:
-					Incoming.Ping();
-					return;
-				case Message.PONG:
-					Incoming.Pong();
-					return;
-				case Message.CREATE_LOBBY:
-					Incoming.CreateLobby();
-					return;
-				case Message.DELETE_LOBBY:
-					Incoming.DeleteLobby();
-					return;
-				case Message.GET_PLAYER_INFO:
-					Incoming.GetPlayerInfo();
-					return;
-				case Message.PLAYER_INFO:
-					Incoming.PlayerInfo();
-					return;
-				case Message.KICK:
-					Incoming.Kick();
-					return;
-				case Message.VERSION:
-					Incoming.Version();
+				case Message.USERNAME_TAKEN:
+					UsernameTaken.Incoming(JsonConverter.Convert<UsernameTakenRequest>(data));
 					return;
 				case Message.UNKNOWN_MESSAGE:
-					Incoming.UnknownMessage(messageEventArgs.Data);
+					UnknownMessage.Incoming(JsonConverter.Convert<UnknownMessageRequest>(data));
 					return;
-				case Message.LOBBY_CREATED:
-					Incoming.LobbyCreated();
+				case Message.UNKNOWN_LOBBY:
+					UnknownLobby.Incoming(JsonConverter.Convert<UnknownLobbyRequest>(data));
 					return;
-				case Message.LOBBY_DELETED:
-					Incoming.LobbyDeleted();
-					return;
+				case Message.JOIN_LOBBY:
 				default:
-					throw new ArgumentOutOfRangeException();
+					UnknownMessage.Outgoing(e.Data);
+					return;
 			}
+		}
+
+		public void SendMessage(Message message)
+		{
+			Ws.SendAsync(message.ToString(), _ => { });
+		}
+
+		public void SendMessage(Message message, Action<bool> callback)
+		{
+			Ws.SendAsync(message.ToString(), callback);
+		}
+
+		public void SendMessage(Message message, string data)
+		{
+			Ws.SendAsync($"{message.ToString()}:{data}", _ => { });
+		}
+
+		public void SendMessage(Message message, string data, Action<bool> callback)
+		{
+			Ws.SendAsync($"{message.ToString()}:{data}", callback);
 		}
 
 		public void OnApplicationQuit()
 		{
-			Outgoing.CloseConnection();
 			Ws.Close();
 		}
 	}
