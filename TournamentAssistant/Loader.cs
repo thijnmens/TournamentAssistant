@@ -13,6 +13,7 @@ namespace TournamentAssistant
 				LoadAssembly(@"Mods\TA\websocket-sharp.dll");
 				LoadAssembly(@"Mods\TA\TaUtilities.dll");
 				LoadAssembly(@"Mods\TA\Newtonsoft.Json.dll");
+				LoadAssembly(@"Mods\TA\DotNetZip.dll");
 
 				var _ = new TournamentAssistant(modEntry);
 				return true;

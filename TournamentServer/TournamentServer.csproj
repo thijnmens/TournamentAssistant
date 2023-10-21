@@ -54,8 +54,11 @@
 		<Compile Include="Classes\Lobby.cs"/>
 		<Compile Include="Classes\Player.cs"/>
 		<Compile Include="Messages\Connected.cs"/>
+		<Compile Include="Messages\DownloadMap.cs"/>
 		<Compile Include="Messages\JoinedLobby.cs"/>
 		<Compile Include="Messages\JoinLobby.cs"/>
+		<Compile Include="Messages\MapDownloaded.cs" />
+		<Compile Include="Messages\OperationFailed.cs" />
 		<Compile Include="Messages\UnknownLobby.cs"/>
 		<Compile Include="Messages\UnknownMessage.cs"/>
 		<Compile Include="Messages\UsernameTaken.cs"/>

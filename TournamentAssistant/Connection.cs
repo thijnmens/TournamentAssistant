@@ -29,10 +29,10 @@ namespace TournamentAssistant
 		private void OnMessage(object sender, MessageEventArgs e)
 		{
 			var splitMessage = e.Data.Split(new[] { ':' }, 2);
-			var messageType = splitMessage.First();
-			var data = splitMessage.Last();
+			var messageType = splitMessage.First().Trim();
+			var data = splitMessage.Last().Trim();
 
-			if (Enum.TryParse(messageType, out Message message)) throw new ArgumentException();
+			var message = (Message)Enum.Parse(typeof(Message), messageType);
 
 			switch (message)
 			{
@@ -51,7 +51,14 @@ namespace TournamentAssistant
 				case Message.UNKNOWN_LOBBY:
 					UnknownLobby.Incoming(JsonConverter.Convert<UnknownLobbyRequest>(data));
 					return;
+				case Message.DOWNLOAD_MAP:
+					DownloadMap.Incoming(JsonConverter.Convert<DownloadMapRequest>(data));
+					return;
+				case Message.OPERATION_FAILED:
+					OperationFailed.Incoming(JsonConverter.Convert<OperationFailedRequest>(data));
+					return;
 				case Message.JOIN_LOBBY:
+				case Message.MAP_DOWNLOADED:
 				default:
 					UnknownMessage.Outgoing(e.Data);
 					return;
@@ -81,6 +88,12 @@ namespace TournamentAssistant
 		public void OnApplicationQuit()
 		{
 			Ws.Close();
+		}
+		
+		public void OnApplicationQuit(Action callback)
+		{
+			Ws.Close();
+			callback();
 		}
 	}
 }

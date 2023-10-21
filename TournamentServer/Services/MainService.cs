@@ -63,6 +63,15 @@ namespace TournamentServer.Services
 				case Message.JOIN_LOBBY:
 					JoinLobby.Incoming(this, JsonConverter.Convert<JoinLobbyRequest>(data));
 					return;
+				case Message.DOWNLOAD_MAP:
+					DownloadMap.Incoming(this, JsonConverter.Convert<DownloadMapRequest>(data));
+					return;
+				case Message.MAP_DOWNLOADED:
+					MapDownloaded.Incoming(this);
+					return;
+				case Message.OPERATION_FAILED:
+					OperationFailed.Incoming(JsonConverter.Convert<OperationFailedRequest>(data));
+					return;
 				case Message.CONNECTED:
 				case Message.JOINED_LOBBY:
 				case Message.USERNAME_TAKEN:
