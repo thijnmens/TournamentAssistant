@@ -8,9 +8,10 @@ namespace TournamentAssistant
 {
 	public class TournamentAssistant
 	{
-
 		public static UnityModManager.ModEntry ModEntry { get; private set; }
+
 		[CanBeNull] public static Connection Connection { get; private set; }
+
 		private string LobbyUrl { get; set; } = "";
 
 		public TournamentAssistant(UnityModManager.ModEntry modEntry)

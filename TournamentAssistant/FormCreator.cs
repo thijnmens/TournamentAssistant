@@ -8,7 +8,6 @@ namespace TournamentAssistant
 {
 	public class FormCreator
 	{
-
 		private Form Form { get; }
 
 		public FormCreator()

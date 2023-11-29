@@ -13,7 +13,8 @@ namespace TournamentAssistant
 			[HarmonyPrefix]
 			private static bool Prefix()
 			{
-				if (TournamentAssistant.Connection != null) TournamentAssistant.Connection.OnApplicationQuit();
+				if (TournamentAssistant.Connection != null)
+					TournamentAssistant.Connection.OnApplicationQuit();
 				return true;
 			}
 		}

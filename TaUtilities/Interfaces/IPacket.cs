@@ -2,10 +2,8 @@
 {
 	public interface IPacket
 	{
-		string MessageType { get; }
+		MessageType MessageType { get; }
 		string Username { get; }
 		ApplicationType ApplicationType { get; }
-		IData Data { get; }
-		int? LobbyCode { get; }
 	}
 }

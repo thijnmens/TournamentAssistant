@@ -1,17 +1,23 @@
-﻿using System.Collections.Generic;
-using TaUtilities.Interfaces;
+﻿using TournamentServer.Services;
 
 namespace TournamentServer.Classes
 {
 	public class Lobby
 	{
 		public int LobbyCode { get; }
-		public List<IUser> Users { get; }
+		public string Password { get; }
+		public string Owner { get; }
 
-		public Lobby(int lobbyCode, List<IUser> users)
+		public Lobby(int lobbyCode, string password, string owner)
 		{
 			LobbyCode = lobbyCode;
-			Users = users;
+			Password = password;
+			Owner = owner;
+		}
+
+		public void Close()
+		{
+			LobbyService.Lobbies.Remove(LobbyCode);
 		}
 	}
 }

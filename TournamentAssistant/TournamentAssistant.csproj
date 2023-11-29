@@ -94,18 +94,6 @@
 		<Compile Include="Connection.cs"/>
 		<Compile Include="FormCreator.cs"/>
 		<Compile Include="Loader.cs"/>
-		<Compile Include="Messages\Connected.cs"/>
-		<Compile Include="Messages\DelayStatus.cs"/>
-		<Compile Include="Messages\DownloadMap.cs"/>
-		<Compile Include="Messages\GetDelay.cs"/>
-		<Compile Include="Messages\JoinedLobby.cs"/>
-		<Compile Include="Messages\JoinLobby.cs"/>
-		<Compile Include="Messages\MapDownloaded.cs"/>
-		<Compile Include="Messages\OperationFailed.cs"/>
-		<Compile Include="Messages\UnknownLobby.cs"/>
-		<Compile Include="Messages\UnknownMessage.cs"/>
-		<Compile Include="Messages\UsernameTaken.cs"/>
-		<Compile Include="Packets\CreateLobby.cs" />
 		<Compile Include="Patches.cs"/>
 		<Compile Include="TournamentAssistant.cs"/>
 		<Compile Include="Properties\AssemblyInfo.cs"/>
@@ -124,10 +112,10 @@
 		<PostBuildEvent>
 			tasklist /fi "ImageName eq A Dance of Fire and Ice.exe" /fo csv 2&gt;NUL | find /I "A Dance of Fire and Ice.exe"&gt;NUL
 			if "%25ERRORLEVEL%25"=="0" taskkill /IM "A Dance of Fire and Ice.exe" /F
-			copy "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\A Dance of Fire and Ice\Mods\TA" /Y
-			copy "$(TargetDir)Newtonsoft.Json.dll" "C:\Program Files (x86)\Steam\steamapps\common\A Dance of Fire and Ice\Mods\TA" /Y
-			copy "$(TargetDir)zxing.dll" "C:\Program Files (x86)\Steam\steamapps\common\A Dance of Fire and Ice\Mods\TA" /Y
-			copy "$(TargetDir)zxing.presentation.dll" "C:\Program Files (x86)\Steam\steamapps\common\A Dance of Fire and Ice\Mods\TA" /Y
+			copy "$(TargetPath)" "$(ADOFAI_PATH)\Mods\TA" /Y
+			copy "$(TargetDir)Newtonsoft.Json.dll" "$(ADOFAI_PATH)\Mods\TA" /Y
+			copy "$(TargetDir)zxing.dll" "$(ADOFAI_PATH)\Mods\TA" /Y
+			copy "$(TargetDir)zxing.presentation.dll" "$(ADOFAI_PATH)\Mods\TA" /Y
 			start steam://rungameid/977950
 		</PostBuildEvent>
 	</PropertyGroup>

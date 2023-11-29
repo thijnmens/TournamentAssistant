@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using TournamentServer.Classes;
 using TournamentServer.Services;
 using static Crayon.Output;
-
 
 namespace TournamentServer
 {
@@ -24,13 +24,19 @@ namespace TournamentServer
 
 			var ip = "127.0.0.1";
 			var port = "8080";
-			if (args.Contains("--ip")) ip = args[args.ToList().IndexOf("--ip") + 1];
-			if (args.Contains("--port")) port = args[args.ToList().IndexOf("--port") + 1];
+			if (args.Contains("--ip"))
+				ip = args[args.ToList().IndexOf("--ip") + 1];
+			if (args.Contains("--port"))
+				port = args[args.ToList().IndexOf("--port") + 1];
 
 			Websocket = new Websocket(ip, port);
 			stopwatch.Stop();
 
-			WriteServerInfo(stopwatch.ElapsedMilliseconds.ToString(), Websocket.IpAddress, Websocket.Port);
+			WriteServerInfo(
+				stopwatch.ElapsedMilliseconds.ToString(),
+				Websocket.IpAddress,
+				Websocket.Port
+			);
 
 			while (true)
 			{
@@ -42,8 +48,12 @@ namespace TournamentServer
 						break;
 
 					case 'l':
-						WriteConnections(Websocket.Connections);
+						WriteLobbies(LobbyService.Lobbies);
 						break;
+
+					// case 'c':
+					// 	WriteConnections(Websocket.IpAddress);
+					// 	break;
 
 					case 'q':
 						goto exit_loop;
@@ -66,13 +76,19 @@ namespace TournamentServer
 			// ########################################################################################################################
 			Console.WriteLine(Bright.Black(new string('#', Console.WindowWidth)));
 			Console.WriteLine(
-				$"{Bright.Black("#")}{new string(' ', Console.WindowWidth / 2 - 14)}Tournament Assistant Server");
+				$"{Bright.Black("#")}{new string(' ', Console.WindowWidth / 2 - 14)}Tournament Assistant Server"
+			);
 			Console.SetCursorPosition(Console.WindowWidth - 1, 1);
 			Console.Write(Bright.Black("#"));
-			Console.WriteLine($"{Bright.Black("#")}{new string(' ', Console.WindowWidth - 2)}{Bright.Black("#")}");
-			Console.WriteLine($"{Bright.Black("#")}{new string(' ', Console.WindowWidth - 2)}{Bright.Black("#")}");
 			Console.WriteLine(
-				$"{Bright.Black("#")}  Version {Green(FileVersionInfo.GetVersionInfo(Assembly.GetAssembly(typeof(Server)).Location).FileVersion)}{new string(' ', Console.WindowWidth - 19)}{Bright.Black("#")}");
+				$"{Bright.Black("#")}{new string(' ', Console.WindowWidth - 2)}{Bright.Black("#")}"
+			);
+			Console.WriteLine(
+				$"{Bright.Black("#")}{new string(' ', Console.WindowWidth - 2)}{Bright.Black("#")}"
+			);
+			Console.WriteLine(
+				$"{Bright.Black("#")}  Version {Green(FileVersionInfo.GetVersionInfo(Assembly.GetAssembly(typeof(Server)).Location).FileVersion)}{new string(' ', Console.WindowWidth - 19)}{Bright.Black("#")}"
+			);
 			Console.WriteLine(Bright.Black(new string('#', Console.WindowWidth)));
 			Console.WriteLine();
 		}
@@ -85,7 +101,8 @@ namespace TournamentServer
 			Console.WriteLine("");
 			Console.WriteLine($"Server Started in {Green(startupTime)}ms");
 			Console.WriteLine(
-				$"Server is listening on {Underline(Red($"ws://{ipAddress}:{port}"))}");
+				$"Server is listening on {Underline(Red($"ws://{ipAddress}:{port}"))}"
+			);
 			Console.WriteLine($"Press {Underline(Bold("h"))} for help");
 		}
 
@@ -97,10 +114,19 @@ namespace TournamentServer
 			Console.WriteLine($"{Green("#")} {Red("l")} to list connections");
 		}
 
-		private static void WriteConnections(Dictionary<string, MainService> connections)
+		// private static void WriteConnections(Dictionary<string, MainService> connections)
+		// {
+		// 	Console.WriteLine($"\n{Bright.Blue("Connections")}");
+		// 	connections.ToList().ForEach(connection => { Console.WriteLine($"{Green("#")} {Red(connection.Value.User.Username)}"); });
+		// 	Console.WriteLine();
+		// }
+
+		private static void WriteLobbies(Dictionary<int, Lobby> lobbies)
 		{
-			Console.WriteLine($"\n{Bright.Blue("Connections")}");
-			connections.ToList().ForEach(connection => { Console.WriteLine($"{Green("#")} {Red(connection.Value.User.Username)}"); });
+			Console.WriteLine($"\n{Bright.Blue("Lobbies")}");
+			lobbies
+				.ToList()
+				.ForEach(connection => { Console.WriteLine($"{Green("#")} {Red(connection.Value.LobbyCode.ToString())} {White("-")} {Yellow(connection.Value.Owner)}"); });
 			Console.WriteLine();
 		}
 
@@ -117,6 +143,11 @@ namespace TournamentServer
 		public static void WriteError(string message)
 		{
 			Console.WriteLine($"{Red("!!!")} {Bright.Red(message)}");
+		}
+
+		public static void WriteNewConnection(string username)
+		{
+			Console.WriteLine($"{Green("✔")} New connection from {username}");
 		}
 	}
 }
