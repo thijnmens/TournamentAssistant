@@ -11,17 +11,10 @@ namespace TournamentServer.Messages
 		public static void Incoming(MainService mainService, DownloadMapRequest downloadMapRequest)
 		{
 			if (mainService.User.GetType() == typeof(Coordinator))
-			{
 				// TODO: Filter by lobby
 				foreach (var connection in Server.Websocket.Connections)
-				{
 					Outgoing(connection.Value, downloadMapRequest.DownloadUrl);
-				}
-			}
-			else
-			{
-				UnknownMessage.Outgoing(mainService, $"DOWNLOAD_MAP:{{\"downloadUrl\":\"{downloadMapRequest.DownloadUrl}\"}}");
-			}
+			else UnknownMessage.Outgoing(mainService, $"DOWNLOAD_MAP:{{\"downloadUrl\":\"{downloadMapRequest.DownloadUrl}\"}}");
 		}
 
 		public static void Outgoing(MainService mainService, string downloadUrl)

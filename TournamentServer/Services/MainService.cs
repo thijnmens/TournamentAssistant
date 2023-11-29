@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using TaUtilities;
+using TaUtilities.Interfaces;
 using TournamentServer.Classes;
 using TournamentServer.Messages;
 using WebSocketSharp;
@@ -71,6 +72,12 @@ namespace TournamentServer.Services
 					return;
 				case Message.OPERATION_FAILED:
 					OperationFailed.Incoming(JsonConverter.Convert<OperationFailedRequest>(data));
+					return;
+				case Message.GET_DELAY:
+					GetDelay.Incoming(this);
+					return;
+				case Message.DELAY_STATUS:
+					DelayStatus.Incoming(this, JsonConverter.Convert<DelayStatusRequest>(data));
 					return;
 				case Message.CONNECTED:
 				case Message.JOINED_LOBBY:

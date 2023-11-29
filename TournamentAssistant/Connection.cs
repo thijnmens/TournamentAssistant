@@ -57,6 +57,12 @@ namespace TournamentAssistant
 				case Message.OPERATION_FAILED:
 					OperationFailed.Incoming(JsonConverter.Convert<OperationFailedRequest>(data));
 					return;
+				case Message.GET_DELAY:
+					GetDelay.Incoming();
+					break;
+				case Message.DELAY_STATUS:
+					DelayStatus.Incoming(JsonConverter.Convert<DelayStatusRequest>(data));
+					break;
 				case Message.JOIN_LOBBY:
 				case Message.MAP_DOWNLOADED:
 				default:
@@ -89,7 +95,7 @@ namespace TournamentAssistant
 		{
 			Ws.Close();
 		}
-		
+
 		public void OnApplicationQuit(Action callback)
 		{
 			Ws.Close();

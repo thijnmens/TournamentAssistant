@@ -39,10 +39,7 @@ namespace TournamentAssistant
 				}
 				else
 				{
-					Connection?.OnApplicationQuit(() =>
-					{
-						Connection = null;
-					});
+					Connection?.OnApplicationQuit(() => { Connection = null; });
 				}
 			}
 
