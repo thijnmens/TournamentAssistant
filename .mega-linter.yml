@@ -15,7 +15,7 @@ APPLY_FIXES: all
 # ENABLE_LINTERS:
 
 DISABLE_ERRORS_LINTERS:
-  - GITLEAKS
+  - REPOSITORY_GITLEAKS
 
  DISABLE:
   # - COPYPASTE # Uncomment to disable checks of excessive copy-pastes
