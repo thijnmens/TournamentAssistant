@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using TaUtilities.Interfaces;
 using TaUtilities.Packets;
@@ -29,6 +28,7 @@ namespace TournamentServer.Classes
 			{
 				user.Connection.SendMessage(lobbyLeftPacket);
 			}
+
 			LobbyService.Lobbies.Remove(LobbyCode);
 		}
 

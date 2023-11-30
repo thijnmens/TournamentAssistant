@@ -50,9 +50,9 @@
 		</Reference>
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Include="Classes\Coordinator.cs" />
+		<Compile Include="Classes\Coordinator.cs"/>
 		<Compile Include="Classes\Lobby.cs"/>
-		<Compile Include="Classes\Player.cs" />
+		<Compile Include="Classes\Player.cs"/>
 		<Compile Include="Routes\MainRoute.cs"/>
 		<Compile Include="Server.cs"/>
 		<Compile Include="Properties\AssemblyInfo.cs"/>

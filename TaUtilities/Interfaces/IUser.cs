@@ -1,6 +1,4 @@
-﻿using WebSocketSharp.Server;
-
-namespace TaUtilities.Interfaces
+﻿namespace TaUtilities.Interfaces
 {
 	public interface IUser
 	{

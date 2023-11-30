@@ -5,7 +5,6 @@ using TaUtilities;
 using TaUtilities.Interfaces;
 using TaUtilities.Packets;
 using TournamentServer.Classes;
-using WebSocketSharp.Server;
 
 namespace TournamentServer.Services
 {
@@ -44,6 +43,7 @@ namespace TournamentServer.Services
 			{
 				user = new Player(packet.Username, connection);
 			}
+
 			return lobby.Join(user);
 		}
 

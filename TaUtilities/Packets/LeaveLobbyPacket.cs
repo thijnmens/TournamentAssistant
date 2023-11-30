@@ -7,20 +7,12 @@ namespace TaUtilities.Packets
 	public class LeaveLobbyPacket : IPacket
 	{
 		[JsonConstructor]
-		public LeaveLobbyPacket(MessageType messageType, string username, ApplicationType applicationType, LeaveLobbyData data)
+		public LeaveLobbyPacket(string username, ApplicationType applicationType, LeaveLobbyData data)
 		{
-			MessageType = messageType;
+			MessageType = MessageType.LEAVE_LOBBY;
 			Username = username;
 			ApplicationType = applicationType;
 			Data = data;
-		}
-
-		public LeaveLobbyPacket(int lobbyCode)
-		{
-			MessageType = MessageType.LEAVE_LOBBY;
-			Username = "SERVER";
-			ApplicationType = ApplicationType.SERVER;
-			Data = new LeaveLobbyData(lobbyCode);
 		}
 
 		public LeaveLobbyData Data { get; }

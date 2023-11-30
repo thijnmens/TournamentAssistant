@@ -10,6 +10,16 @@ namespace TournamentServer.Routes
 {
 	public class MainRoute : WebSocketBehavior, IRoute
 	{
+		public void SendMessage(IPacket packet)
+		{
+			SendAsync(packet.ToJson(), _ => { });
+		}
+
+		public void SendMessage(IPacket packet, Action<bool> callback)
+		{
+			SendAsync(packet.ToJson(), callback);
+		}
+
 		protected override void OnMessage(MessageEventArgs e)
 		{
 			if (e.IsPing)
@@ -27,8 +37,7 @@ namespace TournamentServer.Routes
 				case MessageType.CREATE_LOBBY:
 					var createLobbyPacket = PacketConverter.Convert<CreateLobbyPacket>(e.Data);
 					var lobbyCode = LobbyService.CreateLobby(createLobbyPacket);
-					var lobbyCreatedPacket = new LobbyCreatedPacket(lobbyCode);
-					SendMessage(lobbyCreatedPacket);
+					SendMessage(PacketCreator.LobbyCreatedPacket(lobbyCode));
 					break;
 
 				case MessageType.REMOVE_LOBBY:
@@ -65,6 +74,7 @@ namespace TournamentServer.Routes
 						var joinLobbyOperationFailedPacket = new OperationFailedPacket(e.Data);
 						SendMessage(joinLobbyOperationFailedPacket);
 					}
+
 					break;
 
 				case MessageType.LEAVE_LOBBY:
@@ -80,6 +90,7 @@ namespace TournamentServer.Routes
 						var leaveLobbyOperationFailedPacket = new OperationFailedPacket(e.Data);
 						SendMessage(leaveLobbyOperationFailedPacket);
 					}
+
 					break;
 
 				case MessageType.KICK_PLAYER:
@@ -95,6 +106,7 @@ namespace TournamentServer.Routes
 						var kickPlayerOperationFailedPacket = new OperationFailedPacket(e.Data);
 						SendMessage(kickPlayerOperationFailedPacket);
 					}
+
 					break;
 
 				case MessageType.LOBBY_CREATED:
@@ -103,22 +115,11 @@ namespace TournamentServer.Routes
 				case MessageType.LOBBY_LEFT:
 				case MessageType.PLAYER_KICKED:
 				default:
-					var response = new UnknownMessagePacket(MessageType.UNKNOWN_MESSAGE, "SERVER", ApplicationType.SERVER, new UnknownMessageData(e.Data));
-					SendMessage(response);
+					SendMessage(PacketCreator.UnknownMessagePacket(e.Data));
 					break;
 			}
 
 			base.OnMessage(e);
-		}
-
-		public void SendMessage(IPacket packet)
-		{
-			SendAsync(packet.ToJson(), _ => { });
-		}
-
-		public void SendMessage(IPacket packet, Action<bool> callback)
-		{
-			SendAsync(packet.ToJson(), callback);
 		}
 	}
 }

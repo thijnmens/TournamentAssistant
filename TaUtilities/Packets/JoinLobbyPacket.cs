@@ -7,20 +7,12 @@ namespace TaUtilities.Packets
 	public class JoinLobbyPacket : IPacket
 	{
 		[JsonConstructor]
-		public JoinLobbyPacket(MessageType messageType, string username, ApplicationType applicationType, JoinLobbyData data)
+		public JoinLobbyPacket(string username, ApplicationType applicationType, JoinLobbyData data)
 		{
-			MessageType = messageType;
+			MessageType = MessageType.JOIN_LOBBY;
 			Username = username;
 			ApplicationType = applicationType;
 			Data = data;
-		}
-
-		public JoinLobbyPacket(int lobbyCode, string password)
-		{
-			MessageType = MessageType.JOIN_LOBBY;
-			Username = "SERVER";
-			ApplicationType = ApplicationType.SERVER;
-			Data = new JoinLobbyData(lobbyCode, password);
 		}
 
 		public JoinLobbyData Data { get; }

@@ -48,44 +48,45 @@
 	<ItemGroup>
 		<Compile Include="ApplicationType.cs"/>
 		<Compile Include="Interfaces\IPacket.cs"/>
-		<Compile Include="Interfaces\IRoute.cs" />
+		<Compile Include="Interfaces\IRoute.cs"/>
 		<Compile Include="Interfaces\IUser.cs"/>
 		<Compile Include="PacketConverter.cs"/>
 		<Compile Include="MessageType.cs"/>
+		<Compile Include="PacketCreator.cs"/>
 		<Compile Include="Packets\CreateLobbyPacket.cs"/>
 		<Compile Include="Packets\CreateLobbyData.cs">
 			<DependentUpon>CreateLobbyPacket.cs</DependentUpon>
 		</Compile>
 		<Compile Include="Packets\JoinLobbyData.cs">
-		  <DependentUpon>JoinLobbyPacket.cs</DependentUpon>
+			<DependentUpon>JoinLobbyPacket.cs</DependentUpon>
 		</Compile>
-		<Compile Include="Packets\JoinLobbyPacket.cs" />
+		<Compile Include="Packets\JoinLobbyPacket.cs"/>
 		<Compile Include="Packets\KickPlayerData.cs">
-		  <DependentUpon>KickPlayerPacket.cs</DependentUpon>
+			<DependentUpon>KickPlayerPacket.cs</DependentUpon>
 		</Compile>
-		<Compile Include="Packets\KickPlayerPacket.cs" />
+		<Compile Include="Packets\KickPlayerPacket.cs"/>
 		<Compile Include="Packets\LeaveLobbyData.cs">
-		  <DependentUpon>LeaveLobbyPacket.cs</DependentUpon>
+			<DependentUpon>LeaveLobbyPacket.cs</DependentUpon>
 		</Compile>
-		<Compile Include="Packets\LeaveLobbyPacket.cs" />
+		<Compile Include="Packets\LeaveLobbyPacket.cs"/>
 		<Compile Include="Packets\LobbyCreatedData.cs">
-		  <DependentUpon>LobbyCreatedPacket.cs</DependentUpon>
+			<DependentUpon>LobbyCreatedPacket.cs</DependentUpon>
 		</Compile>
 		<Compile Include="Packets\LobbyCreatedPacket.cs"/>
-		<Compile Include="Packets\LobbyJoinedPacket.cs" />
-		<Compile Include="Packets\LobbyLeftPacket.cs" />
+		<Compile Include="Packets\LobbyJoinedPacket.cs"/>
+		<Compile Include="Packets\LobbyLeftPacket.cs"/>
 		<Compile Include="Packets\LobbyRemovedPacket.cs"/>
 		<Compile Include="Packets\OperationFailedData.cs">
-		  <DependentUpon>OperationFailedPacket.cs</DependentUpon>
+			<DependentUpon>OperationFailedPacket.cs</DependentUpon>
 		</Compile>
 		<Compile Include="Packets\OperationFailedPacket.cs"/>
-		<Compile Include="Packets\PlayerKickedPacket.cs" />
+		<Compile Include="Packets\PlayerKickedPacket.cs"/>
 		<Compile Include="Packets\RemoveLobbyData.cs">
-		  <DependentUpon>RemoveLobbyPacket.cs</DependentUpon>
+			<DependentUpon>RemoveLobbyPacket.cs</DependentUpon>
 		</Compile>
 		<Compile Include="Packets\RemoveLobbyPacket.cs"/>
 		<Compile Include="Packets\UnknownMessageData.cs">
-		  <DependentUpon>UnknownMessagePacket.cs</DependentUpon>
+			<DependentUpon>UnknownMessagePacket.cs</DependentUpon>
 		</Compile>
 		<Compile Include="Packets\UnknownMessagePacket.cs"/>
 		<Compile Include="Properties\AssemblyInfo.cs"/>

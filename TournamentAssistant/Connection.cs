@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Steamworks;
 using TaUtilities;
 using TaUtilities.Interfaces;
@@ -9,15 +8,43 @@ namespace TournamentAssistant
 {
 	public class Connection
 	{
-		public Connection(string url, int lobbyCode)
+		public Connection(string url, int lobbyCode, string password = "")
 		{
-			TournamentAssistant.ModEntry.Logger.Log($"Attempting to join {url}?type=mod&username={SteamFriends.GetPersonaName()}");
-			Ws = new WebSocket($"ws://{url}?type=mod&username={SteamFriends.GetPersonaName()}");
+			PacketCreator.ApplicationType = ApplicationType.MOD;
+			PacketCreator.Username = SteamFriends.GetPersonaName();
+
+			TournamentAssistant.ModEntry.Logger.Log($"Attempting to join {url}");
+			Ws = new WebSocket($"ws://{url}");
 			LobbyCode = lobbyCode;
 
 			Ws.ConnectAsync();
 
 			Ws.OnMessage += OnMessage;
+			Ws.OnOpen += (sender, args) =>
+			{
+				SendMessage(
+					PacketCreator.JoinLobbyPacket(lobbyCode, password),
+					joining =>
+					{
+						if (joining)
+						{
+							TournamentAssistant
+								.ModEntry
+								.Logger
+								.Log($"Attempting to join lobby with code `{LobbyCode}` and username `{PacketCreator.Username}` (usingPassword={string.IsNullOrWhiteSpace(password)})");
+						}
+						else
+						{
+							TournamentAssistant
+								.ModEntry
+								.Logger
+								.Error(
+									$"Something went wrong when attempting to join lobby with code `{LobbyCode}` and username `{PacketCreator.Username}` (usingPassword={string.IsNullOrWhiteSpace(password)})"
+								);
+						}
+					}
+				);
+			};
 		}
 
 		private WebSocket Ws { get; }
@@ -26,21 +53,51 @@ namespace TournamentAssistant
 
 		private void OnMessage(object sender, MessageEventArgs e)
 		{
-			var splitMessage = e.Data.Split(new[] { ':' }, 2);
-			var messageType = splitMessage.First().Trim();
-			var data = splitMessage.Last().Trim();
+			if (e.IsPing)
+				return;
 
-			var message = (MessageType)Enum.Parse(typeof(MessageType), messageType);
+			var messageType = PacketConverter.GetMessageType(e.Data);
+
+			switch (messageType)
+			{
+				case MessageType.UNKNOWN_MESSAGE:
+					TournamentAssistant.ModEntry.Logger.Warning($"Send an unknown message to the server:\n`{e.Data}`");
+					break;
+
+				case MessageType.OPERATION_FAILED:
+					TournamentAssistant.ModEntry.Logger.Error($"An operation on the server failed:\n`{e.Data}`");
+					break;
+
+				case MessageType.LOBBY_JOINED:
+					TournamentAssistant.ModEntry.Logger.Log($"Successfully joined lobby with code `{LobbyCode}` and username `{PacketCreator.Username}`");
+					break;
+
+				case MessageType.LOBBY_LEFT:
+					TournamentAssistant.ModEntry.Logger.Log("Left lobby`");
+					break;
+
+				case MessageType.CREATE_LOBBY:
+				case MessageType.LOBBY_CREATED:
+				case MessageType.LOBBY_REMOVED:
+				case MessageType.REMOVE_LOBBY:
+				case MessageType.JOIN_LOBBY:
+				case MessageType.LEAVE_LOBBY:
+				case MessageType.PLAYER_KICKED:
+				case MessageType.KICK_PLAYER:
+				default:
+					SendMessage(PacketCreator.UnknownMessagePacket(e.Data));
+					break;
+			}
 		}
 
 		public void SendMessage(IPacket packet)
 		{
-			Ws.SendAsync(packet.ToString(), _ => { });
+			Ws.SendAsync(packet.ToJson(), _ => { });
 		}
 
 		public void SendMessage(IPacket packet, Action<bool> callback)
 		{
-			Ws.SendAsync(packet.ToString(), callback);
+			Ws.SendAsync(packet.ToJson(), callback);
 		}
 
 		public void OnApplicationQuit()

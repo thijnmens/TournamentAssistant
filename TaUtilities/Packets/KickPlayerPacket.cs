@@ -6,18 +6,10 @@ namespace TaUtilities.Packets
 {
 	public class KickPlayerPacket : IPacket
 	{
-		public KickPlayerPacket(int lobbyCode, string username, string password)
+		[JsonConstructor]
+		public KickPlayerPacket(string username, ApplicationType applicationType, KickPlayerData data)
 		{
 			MessageType = MessageType.KICK_PLAYER;
-			Username = "SERVER";
-			ApplicationType = ApplicationType.SERVER;
-			Data = new KickPlayerData(lobbyCode, username, password);
-		}
-
-		[JsonConstructor]
-		public KickPlayerPacket(MessageType messageType, string username, ApplicationType applicationType, KickPlayerData data)
-		{
-			MessageType = messageType;
 			Username = username;
 			ApplicationType = applicationType;
 			Data = data;

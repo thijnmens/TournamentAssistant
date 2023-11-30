@@ -6,18 +6,10 @@ namespace TaUtilities.Packets
 {
 	public class LobbyCreatedPacket : IPacket
 	{
-		public LobbyCreatedPacket(int lobbyCode)
+		[JsonConstructor]
+		public LobbyCreatedPacket(string username, ApplicationType applicationType, LobbyCreatedData data)
 		{
 			MessageType = MessageType.LOBBY_CREATED;
-			Username = "SERVER";
-			ApplicationType = ApplicationType.SERVER;
-			Data = new LobbyCreatedData(lobbyCode);
-		}
-
-		[JsonConstructor]
-		public LobbyCreatedPacket(MessageType messageType, string username, ApplicationType applicationType, LobbyCreatedData data)
-		{
-			MessageType = messageType;
 			Username = username;
 			ApplicationType = applicationType;
 			Data = data;
