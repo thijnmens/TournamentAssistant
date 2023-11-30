@@ -9,16 +9,9 @@ namespace TournamentAssistant
 {
 	public class Connection
 	{
-		private WebSocket Ws { get; }
-
-		private int LobbyCode { get; }
-
 		public Connection(string url, int lobbyCode)
 		{
-			TournamentAssistant
-				.ModEntry
-				.Logger
-				.Log($"Attempting to join {url}?type=mod&username={SteamFriends.GetPersonaName()}");
+			TournamentAssistant.ModEntry.Logger.Log($"Attempting to join {url}?type=mod&username={SteamFriends.GetPersonaName()}");
 			Ws = new WebSocket($"ws://{url}?type=mod&username={SteamFriends.GetPersonaName()}");
 			LobbyCode = lobbyCode;
 
@@ -26,6 +19,10 @@ namespace TournamentAssistant
 
 			Ws.OnMessage += OnMessage;
 		}
+
+		private WebSocket Ws { get; }
+
+		private int LobbyCode { get; }
 
 		private void OnMessage(object sender, MessageEventArgs e)
 		{

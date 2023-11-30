@@ -5,5 +5,7 @@
 		MessageType MessageType { get; }
 		string Username { get; }
 		ApplicationType ApplicationType { get; }
+
+		string ToJson();
 	}
 }

@@ -6,13 +6,6 @@ namespace TaUtilities.Packets
 {
 	public class LobbyCreatedPacket : IPacket
 	{
-		public LobbyCreatedData Data { get; }
-		[JsonConverter(typeof(StringEnumConverter))]
-		public MessageType MessageType { get; }
-		public string Username { get; }
-		[JsonConverter(typeof(StringEnumConverter))]
-		public ApplicationType ApplicationType { get; }
-
 		public LobbyCreatedPacket(int lobbyCode)
 		{
 			MessageType = MessageType.LOBBY_CREATED;
@@ -22,25 +15,25 @@ namespace TaUtilities.Packets
 		}
 
 		[JsonConstructor]
-		public LobbyCreatedPacket(MessageType messageType, string username, ApplicationType applicationType, int lobbyCode)
+		public LobbyCreatedPacket(MessageType messageType, string username, ApplicationType applicationType, LobbyCreatedData data)
 		{
 			MessageType = messageType;
 			Username = username;
 			ApplicationType = applicationType;
-			Data = new LobbyCreatedData(lobbyCode);
+			Data = data;
 		}
 
-		public class LobbyCreatedData
-		{
-			public int LobbyCode { get; }
+		public LobbyCreatedData Data { get; }
 
-			public LobbyCreatedData(int lobbyCode)
-			{
-				LobbyCode = lobbyCode;
-			}
-		}
+		[JsonConverter(typeof(StringEnumConverter))]
+		public MessageType MessageType { get; }
 
-		public override string ToString()
+		public string Username { get; }
+
+		[JsonConverter(typeof(StringEnumConverter))]
+		public ApplicationType ApplicationType { get; }
+
+		public string ToJson()
 		{
 			return PacketConverter.Convert(this);
 		}

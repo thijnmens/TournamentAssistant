@@ -6,48 +6,36 @@ namespace TaUtilities.Packets
 {
 	public class OperationFailedPacket : IPacket
 	{
-		public OperationFailedData Data { get; }
-		[JsonConverter(typeof(StringEnumConverter))]
-		public MessageType MessageType { get; }
-		public string Username { get; }
-		[JsonConverter(typeof(StringEnumConverter))]
-		public ApplicationType ApplicationType { get; }
-
 		public OperationFailedPacket(string failedOperationMessage)
 		{
-			MessageType = MessageType.UNKNOWN_MESSAGE;
+			MessageType = MessageType.OPERATION_FAILED;
 			Username = "SERVER";
 			ApplicationType = ApplicationType.SERVER;
 			Data = new OperationFailedData(failedOperationMessage);
 		}
 
 		[JsonConstructor]
-		public OperationFailedPacket(
-			MessageType messageType,
-			string username,
-			ApplicationType applicationType,
-			string failedOperationMessage
-		)
+		public OperationFailedPacket(MessageType messageType, string username, ApplicationType applicationType, OperationFailedData data)
 		{
 			MessageType = messageType;
 			Username = username;
 			ApplicationType = applicationType;
-			Data = new OperationFailedData(failedOperationMessage);
+			Data = data;
 		}
 
-		public override string ToString()
+		public OperationFailedData Data { get; }
+
+		[JsonConverter(typeof(StringEnumConverter))]
+		public MessageType MessageType { get; }
+
+		public string Username { get; }
+
+		[JsonConverter(typeof(StringEnumConverter))]
+		public ApplicationType ApplicationType { get; }
+
+		public string ToJson()
 		{
 			return PacketConverter.Convert(this);
-		}
-
-		public class OperationFailedData
-		{
-			public string FailedOperationMessage { get; }
-
-			public OperationFailedData(string failedOperationMessage)
-			{
-				FailedOperationMessage = failedOperationMessage;
-			}
 		}
 	}
 }

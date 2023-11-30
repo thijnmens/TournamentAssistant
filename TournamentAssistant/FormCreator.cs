@@ -8,8 +8,6 @@ namespace TournamentAssistant
 {
 	public class FormCreator
 	{
-		private Form Form { get; }
-
 		public FormCreator()
 		{
 			var writer = new BarcodeWriter
@@ -39,6 +37,8 @@ namespace TournamentAssistant
 
 			Form.ShowDialog();
 		}
+
+		private Form Form { get; }
 
 		public void Show()
 		{

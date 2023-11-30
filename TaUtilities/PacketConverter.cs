@@ -23,13 +23,13 @@ namespace TaUtilities
 
 		private class JsonMessageType
 		{
-			[JsonConverter(typeof(StringEnumConverter))]
-			public MessageType MessageType { get; }
-
 			public JsonMessageType(MessageType messageType)
 			{
 				MessageType = messageType;
 			}
+
+			[JsonConverter(typeof(StringEnumConverter))]
+			public MessageType MessageType { get; }
 		}
 	}
 }

@@ -4,26 +4,22 @@ using TaUtilities.Interfaces;
 
 namespace TaUtilities.Packets
 {
-	public class UnknownMessagePacket : IPacket
+	public class LobbyJoinedPacket : IPacket
 	{
-		public UnknownMessagePacket(string receivedMessage)
-		{
-			MessageType = MessageType.UNKNOWN_MESSAGE;
-			Username = "SERVER";
-			ApplicationType = ApplicationType.SERVER;
-			Data = new UnknownMessageData(receivedMessage);
-		}
-
 		[JsonConstructor]
-		public UnknownMessagePacket(MessageType messageType, string username, ApplicationType applicationType, UnknownMessageData data)
+		public LobbyJoinedPacket(MessageType messageType, string username, ApplicationType applicationType)
 		{
 			MessageType = messageType;
 			Username = username;
 			ApplicationType = applicationType;
-			Data = data;
 		}
 
-		public UnknownMessageData Data { get; }
+		public LobbyJoinedPacket()
+		{
+			MessageType = MessageType.LOBBY_JOINED;
+			Username = "SERVER";
+			ApplicationType = ApplicationType.SERVER;
+		}
 
 		[JsonConverter(typeof(StringEnumConverter))]
 		public MessageType MessageType { get; }

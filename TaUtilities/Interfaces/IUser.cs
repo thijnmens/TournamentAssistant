@@ -5,7 +5,8 @@ namespace TaUtilities.Interfaces
 	public interface IUser
 	{
 		string Username { get; }
-		IWebSocketSession Connection { get; }
+		IRoute Connection { get; }
+
 		string ToString();
 	}
 }

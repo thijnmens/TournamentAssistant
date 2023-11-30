@@ -8,12 +8,6 @@ namespace TournamentAssistant
 {
 	public class TournamentAssistant
 	{
-		public static UnityModManager.ModEntry ModEntry { get; private set; }
-
-		[CanBeNull] public static Connection Connection { get; private set; }
-
-		private string LobbyUrl { get; set; } = "";
-
 		public TournamentAssistant(UnityModManager.ModEntry modEntry)
 		{
 			ModEntry = modEntry;
@@ -23,6 +17,13 @@ namespace TournamentAssistant
 
 			modEntry.OnGUI += OnGui;
 		}
+
+		private string LobbyUrl { get; set; } = "";
+
+		public static UnityModManager.ModEntry ModEntry { get; private set; }
+
+		[CanBeNull]
+		public static Connection Connection { get; private set; }
 
 		private void OnGui(UnityModManager.ModEntry modEntry)
 		{
@@ -40,7 +41,10 @@ namespace TournamentAssistant
 				}
 				else
 				{
-					Connection?.OnApplicationQuit(() => { Connection = null; });
+					Connection?.OnApplicationQuit(() =>
+					{
+						Connection = null;
+					});
 				}
 			}
 

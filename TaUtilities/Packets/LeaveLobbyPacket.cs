@@ -4,18 +4,10 @@ using TaUtilities.Interfaces;
 
 namespace TaUtilities.Packets
 {
-	public class UnknownMessagePacket : IPacket
+	public class LeaveLobbyPacket : IPacket
 	{
-		public UnknownMessagePacket(string receivedMessage)
-		{
-			MessageType = MessageType.UNKNOWN_MESSAGE;
-			Username = "SERVER";
-			ApplicationType = ApplicationType.SERVER;
-			Data = new UnknownMessageData(receivedMessage);
-		}
-
 		[JsonConstructor]
-		public UnknownMessagePacket(MessageType messageType, string username, ApplicationType applicationType, UnknownMessageData data)
+		public LeaveLobbyPacket(MessageType messageType, string username, ApplicationType applicationType, LeaveLobbyData data)
 		{
 			MessageType = messageType;
 			Username = username;
@@ -23,12 +15,19 @@ namespace TaUtilities.Packets
 			Data = data;
 		}
 
-		public UnknownMessageData Data { get; }
+		public LeaveLobbyPacket(int lobbyCode)
+		{
+			MessageType = MessageType.LEAVE_LOBBY;
+			Username = "SERVER";
+			ApplicationType = ApplicationType.SERVER;
+			Data = new LeaveLobbyData(lobbyCode);
+		}
+
+		public LeaveLobbyData Data { get; }
+		public string Username { get; }
 
 		[JsonConverter(typeof(StringEnumConverter))]
 		public MessageType MessageType { get; }
-
-		public string Username { get; }
 
 		[JsonConverter(typeof(StringEnumConverter))]
 		public ApplicationType ApplicationType { get; }

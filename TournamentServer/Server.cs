@@ -32,11 +32,7 @@ namespace TournamentServer
 			Websocket = new Websocket(ip, port);
 			stopwatch.Stop();
 
-			WriteServerInfo(
-				stopwatch.ElapsedMilliseconds.ToString(),
-				Websocket.IpAddress,
-				Websocket.Port
-			);
+			WriteServerInfo(stopwatch.ElapsedMilliseconds.ToString(), Websocket.IpAddress, Websocket.Port);
 
 			while (true)
 			{
@@ -66,70 +62,6 @@ namespace TournamentServer
 			Console.WriteLine("Closing server...");
 		}
 
-		private static void WriteBanner()
-		{
-			// ########################################################################################################################
-			// #                                             Tournament Assistant Server                                              #
-			// #                                                                                                                      #
-			// #                                                                                                                      #
-			// #  Version 1.0.0.0                                                                                                     #
-			// ########################################################################################################################
-			Console.WriteLine(Bright.Black(new string('#', Console.WindowWidth)));
-			Console.WriteLine(
-				$"{Bright.Black("#")}{new string(' ', Console.WindowWidth / 2 - 14)}Tournament Assistant Server"
-			);
-			Console.SetCursorPosition(Console.WindowWidth - 1, 1);
-			Console.Write(Bright.Black("#"));
-			Console.WriteLine(
-				$"{Bright.Black("#")}{new string(' ', Console.WindowWidth - 2)}{Bright.Black("#")}"
-			);
-			Console.WriteLine(
-				$"{Bright.Black("#")}{new string(' ', Console.WindowWidth - 2)}{Bright.Black("#")}"
-			);
-			Console.WriteLine(
-				$"{Bright.Black("#")}  Version {Green(FileVersionInfo.GetVersionInfo(Assembly.GetAssembly(typeof(Server)).Location).FileVersion)}{new string(' ', Console.WindowWidth - 19)}{Bright.Black("#")}"
-			);
-			Console.WriteLine(Bright.Black(new string('#', Console.WindowWidth)));
-			Console.WriteLine();
-		}
-
-		private static void WriteServerInfo(string startupTime, string ipAddress, string port)
-		{
-			WriteInfo("This is an info message");
-			WriteWarning("This is a warning message");
-			WriteError("This is an error message");
-			Console.WriteLine("");
-			Console.WriteLine($"Server Started in {Green(startupTime)}ms");
-			Console.WriteLine(
-				$"Server is listening on {Underline(Red($"ws://{ipAddress}:{port}"))}"
-			);
-			Console.WriteLine($"Press {Underline(Bold("h"))} for help");
-		}
-
-		private static void WriteHelp()
-		{
-			Console.WriteLine($"\n{Bright.Blue("help")}");
-			Console.WriteLine($"{Green("#")} {Red("h")} for help");
-			Console.WriteLine($"{Green("#")} {Red("q")} to exit");
-			Console.WriteLine($"{Green("#")} {Red("l")} to list connections");
-		}
-
-		// private static void WriteConnections(Dictionary<string, MainService> connections)
-		// {
-		// 	Console.WriteLine($"\n{Bright.Blue("Connections")}");
-		// 	connections.ToList().ForEach(connection => { Console.WriteLine($"{Green("#")} {Red(connection.Value.User.Username)}"); });
-		// 	Console.WriteLine();
-		// }
-
-		private static void WriteLobbies(Dictionary<int, Lobby> lobbies)
-		{
-			Console.WriteLine($"\n{Bright.Blue("Lobbies")}");
-			lobbies
-				.ToList()
-				.ForEach(connection => { Console.WriteLine($"{Green("#")} {Red(connection.Value.LobbyCode.ToString())} {White("-")} {Yellow(connection.Value.Owner)}"); });
-			Console.WriteLine();
-		}
-
 		public static void WriteInfo(string message)
 		{
 			Console.WriteLine($"{Green("~")} {message}");
@@ -148,6 +80,67 @@ namespace TournamentServer
 		public static void WriteNewConnection(string username)
 		{
 			Console.WriteLine($"{Green("✔")} New connection from {username}");
+		}
+
+		private static void WriteBanner()
+		{
+			// ########################################################################################################################
+			// #                                             Tournament Assistant Server                                              #
+			// #                                                                                                                      #
+			// #                                                                                                                      #
+			// #  Version 1.0.0.0                                                                                                     #
+			// ########################################################################################################################
+			Console.WriteLine(Bright.Black(new string('#', Console.WindowWidth)));
+			Console.WriteLine($"{Bright.Black("#")}{new string(' ', Console.WindowWidth / 2 - 14)}Tournament Assistant Server");
+			Console.SetCursorPosition(Console.WindowWidth - 1, 1);
+			Console.Write(Bright.Black("#"));
+			Console.WriteLine($"{Bright.Black("#")}{new string(' ', Console.WindowWidth - 2)}{Bright.Black("#")}");
+			Console.WriteLine($"{Bright.Black("#")}{new string(' ', Console.WindowWidth - 2)}{Bright.Black("#")}");
+			Console.WriteLine(
+				$"{Bright.Black("#")}  Version {Green(FileVersionInfo.GetVersionInfo(Assembly.GetAssembly(typeof(Server)).Location).FileVersion)}{new string(' ', Console.WindowWidth - 19)}{Bright.Black("#")}"
+			);
+			Console.WriteLine(Bright.Black(new string('#', Console.WindowWidth)));
+			Console.WriteLine();
+		}
+
+		private static void WriteServerInfo(string startupTime, string ipAddress, string port)
+		{
+			WriteInfo("This is an info message");
+			WriteWarning("This is a warning message");
+			WriteError("This is an error message");
+			Console.WriteLine("");
+			Console.WriteLine($"Server Started in {Green(startupTime)}ms");
+			Console.WriteLine($"Server is listening on {Underline(Red($"ws://{ipAddress}:{port}"))}");
+			Console.WriteLine($"Press {Underline(Bold("h"))} for help");
+		}
+
+		private static void WriteHelp()
+		{
+			Console.WriteLine($"\n{Bright.Blue("help")}");
+			Console.WriteLine($"{Green("#")} {Red("h")} for help");
+			Console.WriteLine($"{Green("#")} {Red("q")} to exit");
+			Console.WriteLine($"{Green("#")} {Red("l")} to list all lobbies");
+		}
+
+		// private static void WriteConnections(Dictionary<string, MainService> connections)
+		// {
+		// 	Console.WriteLine($"\n{Bright.Blue("Connections")}");
+		// 	connections.ToList().ForEach(connection => { Console.WriteLine($"{Green("#")} {Red(connection.Value.User.Username)}"); });
+		// 	Console.WriteLine();
+		// }
+
+		private static void WriteLobbies(Dictionary<int, Lobby> lobbies)
+		{
+			Console.WriteLine($"\n{Bright.Blue("Lobbies")}");
+			lobbies
+				.ToList()
+				.ForEach(connection =>
+				{
+					Console.WriteLine(
+						$"{Green("#")} {Red(connection.Value.LobbyCode.ToString())} {White("-")} {Yellow(connection.Value.Owner)} {White("-")} {Cyan(LobbyService.GetLobbyByCode(connection.Value.LobbyCode).Users.Count().ToString())}"
+					);
+				});
+			Console.WriteLine();
 		}
 	}
 }

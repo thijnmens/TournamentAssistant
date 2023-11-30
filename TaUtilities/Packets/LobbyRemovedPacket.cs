@@ -6,18 +6,8 @@ namespace TaUtilities.Packets
 {
 	public class LobbyRemovedPacket : IPacket
 	{
-		[JsonConverter(typeof(StringEnumConverter))]
-		public MessageType MessageType { get; }
-		public string Username { get; }
-		[JsonConverter(typeof(StringEnumConverter))]
-		public ApplicationType ApplicationType { get; }
-
 		[JsonConstructor]
-		public LobbyRemovedPacket(
-			MessageType messageType,
-			string username,
-			ApplicationType applicationType
-		)
+		public LobbyRemovedPacket(MessageType messageType, string username, ApplicationType applicationType)
 		{
 			MessageType = messageType;
 			Username = username;
@@ -31,7 +21,15 @@ namespace TaUtilities.Packets
 			ApplicationType = ApplicationType.SERVER;
 		}
 
-		public override string ToString()
+		[JsonConverter(typeof(StringEnumConverter))]
+		public MessageType MessageType { get; }
+
+		public string Username { get; }
+
+		[JsonConverter(typeof(StringEnumConverter))]
+		public ApplicationType ApplicationType { get; }
+
+		public string ToJson()
 		{
 			return PacketConverter.Convert(this);
 		}

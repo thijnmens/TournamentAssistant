@@ -4,18 +4,18 @@ using TaUtilities.Interfaces;
 
 namespace TaUtilities.Packets
 {
-	public class UnknownMessagePacket : IPacket
+	public class KickPlayerPacket : IPacket
 	{
-		public UnknownMessagePacket(string receivedMessage)
+		public KickPlayerPacket(int lobbyCode, string username, string password)
 		{
-			MessageType = MessageType.UNKNOWN_MESSAGE;
+			MessageType = MessageType.KICK_PLAYER;
 			Username = "SERVER";
 			ApplicationType = ApplicationType.SERVER;
-			Data = new UnknownMessageData(receivedMessage);
+			Data = new KickPlayerData(lobbyCode, username, password);
 		}
 
 		[JsonConstructor]
-		public UnknownMessagePacket(MessageType messageType, string username, ApplicationType applicationType, UnknownMessageData data)
+		public KickPlayerPacket(MessageType messageType, string username, ApplicationType applicationType, KickPlayerData data)
 		{
 			MessageType = messageType;
 			Username = username;
@@ -23,7 +23,7 @@ namespace TaUtilities.Packets
 			Data = data;
 		}
 
-		public UnknownMessageData Data { get; }
+		public KickPlayerData Data { get; }
 
 		[JsonConverter(typeof(StringEnumConverter))]
 		public MessageType MessageType { get; }

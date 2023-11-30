@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TaUtilities;
+using TaUtilities.Interfaces;
 using TaUtilities.Packets;
 using TournamentServer.Classes;
+using WebSocketSharp.Server;
 
 namespace TournamentServer.Services
 {
@@ -21,10 +24,40 @@ namespace TournamentServer.Services
 		public static bool RemoveLobby(RemoveLobbyPacket packet)
 		{
 			var lobby = GetLobbyByCode(packet.Data.LobbyCode);
-			if (lobby.Owner != packet.Username || lobby.Password != packet.Data.Password) return false; // Request is not from lobby owner
+
+			if (!lobby.IsAuthorized(packet.Username, packet.Data.Password))
+				return false;
 
 			lobby.Close();
 			return true;
+		}
+
+		public static bool JoinLobby(JoinLobbyPacket packet, IRoute connection)
+		{
+			var lobby = GetLobbyByCode(packet.Data.LobbyCode);
+			IUser user;
+			if (packet.ApplicationType == ApplicationType.APP)
+			{
+				user = new Coordinator(packet.Username, connection);
+			}
+			else
+			{
+				user = new Player(packet.Username, connection);
+			}
+			return lobby.Join(user);
+		}
+
+		public static bool LeaveLobby(LeaveLobbyPacket packet)
+		{
+			var lobby = GetLobbyByCode(packet.Data.LobbyCode);
+			return lobby.Leave(packet.Username);
+		}
+
+		public static bool KickPlayer(KickPlayerPacket packet)
+		{
+			var lobby = GetLobbyByCode(packet.Data.LobbyCode);
+
+			return lobby.IsAuthorized(packet.Username, packet.Data.Password) && lobby.Leave(packet.Data.Username);
 		}
 
 		private static int GenerateLobbyCode()
@@ -37,7 +70,7 @@ namespace TournamentServer.Services
 			return lobbyCode;
 		}
 
-		private static Lobby GetLobbyByCode(int lobbyCode)
+		public static Lobby GetLobbyByCode(int lobbyCode)
 		{
 			return Lobbies.First(kvp => kvp.Key == lobbyCode).Value;
 		}

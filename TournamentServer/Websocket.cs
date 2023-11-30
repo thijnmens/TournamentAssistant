@@ -5,10 +5,6 @@ namespace TournamentServer
 {
 	public class Websocket
 	{
-		private WebSocketServer Server { get; }
-		public string IpAddress { get; }
-		public string Port { get; }
-
 		public Websocket(string ip, string port)
 		{
 			Server = new WebSocketServer($"ws://{ip}:{port}");
@@ -20,5 +16,10 @@ namespace TournamentServer
 			IpAddress = Server.Address.ToString();
 			Port = Server.Port.ToString();
 		}
+
+		private WebSocketServer Server { get; }
+
+		public string IpAddress { get; }
+		public string Port { get; }
 	}
 }
