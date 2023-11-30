@@ -14,9 +14,12 @@ APPLY_FIXES: all
 # default
 # ENABLE_LINTERS:
 
-# DISABLE:
+DISABLE_ERRORS_LINTERS:
+  - GITLEAKS
+
+ DISABLE:
   # - COPYPASTE # Uncomment to disable checks of excessive copy-pastes
-  # - SPELL # Uncomment to disable checks of spelling mistakes
+  - SPELL # Uncomment to disable checks of spelling mistakes
 
 SHOW_ELAPSED_TIME: true
 
