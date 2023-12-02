@@ -1,7 +1,6 @@
 ﻿using System;
 using TaUtilities;
 using TaUtilities.Interfaces;
-using TaUtilities.Packets;
 using TournamentServer.Services;
 using WebSocketSharp;
 using WebSocketSharp.Server;
@@ -22,93 +21,56 @@ namespace TournamentServer.Routes
 
 		protected override void OnMessage(MessageEventArgs e)
 		{
+			base.OnMessage(e);
+
 			if (e.IsPing)
 				return;
 
-			var messageType = PacketConverter.GetMessageType(e.Data);
-
-			switch (messageType)
+			switch (PacketConverter.GetMessageType(e.Data))
 			{
 				case MessageType.UNKNOWN_MESSAGE:
-					var unknownMessagePacket = PacketConverter.Convert<UnknownMessagePacket>(e.Data);
-					Server.WriteWarning($"Server send an unknown message to {unknownMessagePacket.Username}|{unknownMessagePacket.ApplicationType}: `{unknownMessagePacket.Data.ReceivedMessage}`");
-					break;
-
-				case MessageType.CREATE_LOBBY:
-					var createLobbyPacket = PacketConverter.Convert<CreateLobbyPacket>(e.Data);
-					var lobbyCode = LobbyService.CreateLobby(createLobbyPacket);
-					SendMessage(PacketCreator.LobbyCreatedPacket(lobbyCode));
-					break;
-
-				case MessageType.REMOVE_LOBBY:
-					var removeLobbyPacket = PacketConverter.Convert<RemoveLobbyPacket>(e.Data);
-					var lobbyRemoved = LobbyService.RemoveLobby(removeLobbyPacket);
-					if (lobbyRemoved)
-					{
-						var lobbyRemovedPacket = new LobbyRemovedPacket();
-						SendMessage(lobbyRemovedPacket);
-					}
-					else
-					{
-						var removeLobbyOperationFailedPacket = new OperationFailedPacket(e.Data);
-						SendMessage(removeLobbyOperationFailedPacket);
-					}
-
-					break;
+					MessageService.UnknownMessage(e.Data);
+					return;
 
 				case MessageType.OPERATION_FAILED:
-					var operationFailedPacket = PacketConverter.Convert<OperationFailedPacket>(e.Data);
-					Server.WriteError($"An operation failed for {operationFailedPacket.Username}|{operationFailedPacket.ApplicationType}: `{operationFailedPacket.Data.FailedOperationMessage}`");
-					break;
+					MessageService.OperationFailed(e.Data);
+					return;
+
+				case MessageType.CREATE_LOBBY:
+					SendMessage(MessageService.CreateLobby(e.Data));
+					return;
+
+				case MessageType.REMOVE_LOBBY:
+					SendMessage(MessageService.RemoveLobby(e.Data));
+					return;
 
 				case MessageType.JOIN_LOBBY:
-					var joinLobbyPacket = PacketConverter.Convert<JoinLobbyPacket>(e.Data);
-					var joinedLobby = LobbyService.JoinLobby(joinLobbyPacket, this);
-					if (joinedLobby)
-					{
-						var lobbyJoinedPacket = new LobbyJoinedPacket();
-						SendMessage(lobbyJoinedPacket);
-					}
-					else
-					{
-						var joinLobbyOperationFailedPacket = new OperationFailedPacket(e.Data);
-						SendMessage(joinLobbyOperationFailedPacket);
-					}
-
-					break;
+					SendMessage(MessageService.JoinLobby(e.Data, this));
+					return;
 
 				case MessageType.LEAVE_LOBBY:
-					var leaveLobbyPacket = PacketConverter.Convert<LeaveLobbyPacket>(e.Data);
-					var leftLobby = LobbyService.LeaveLobby(leaveLobbyPacket);
-					if (leftLobby)
-					{
-						var lobbyLeftPacket = new LobbyLeftPacket();
-						SendMessage(lobbyLeftPacket);
-					}
-					else
-					{
-						var leaveLobbyOperationFailedPacket = new OperationFailedPacket(e.Data);
-						SendMessage(leaveLobbyOperationFailedPacket);
-					}
-
-					break;
+					SendMessage(MessageService.LeaveLobby(e.Data));
+					return;
 
 				case MessageType.KICK_PLAYER:
-					var kickPlayerPacket = PacketConverter.Convert<KickPlayerPacket>(e.Data);
-					var kickedPlayer = LobbyService.KickPlayer(kickPlayerPacket);
-					if (kickedPlayer)
-					{
-						var playerKickedPacket = new PlayerKickedPacket();
-						SendMessage(playerKickedPacket);
-					}
-					else
-					{
-						var kickPlayerOperationFailedPacket = new OperationFailedPacket(e.Data);
-						SendMessage(kickPlayerOperationFailedPacket);
-					}
+					SendMessage(MessageService.KickPlayer(e.Data));
+					return;
 
-					break;
+				case MessageType.START_DOWNLOAD:
+					SendMessage(MessageService.DownloadMap(e.Data));
+					return;
 
+				case MessageType.DOWNLOAD_FINISHED:
+					MessageService.DownloadFinished(e.Data);
+					return;
+
+				case MessageType.DOWNLOAD_STATUS:
+					SendMessage(MessageService.DownloadStatus(e.Data));
+					return;
+
+				case MessageType.DOWNLOADS_FINISHED:
+				case MessageType.DOWNLOAD_FILE:
+				case MessageType.DOWNLOAD_STARTED:
 				case MessageType.LOBBY_CREATED:
 				case MessageType.LOBBY_REMOVED:
 				case MessageType.LOBBY_JOINED:
@@ -116,10 +78,8 @@ namespace TournamentServer.Routes
 				case MessageType.PLAYER_KICKED:
 				default:
 					SendMessage(PacketCreator.UnknownMessagePacket(e.Data));
-					break;
+					return;
 			}
-
-			base.OnMessage(e);
 		}
 	}
 }

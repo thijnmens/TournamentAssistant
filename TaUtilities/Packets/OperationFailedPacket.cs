@@ -6,18 +6,10 @@ namespace TaUtilities.Packets
 {
 	public class OperationFailedPacket : IPacket
 	{
-		public OperationFailedPacket(string failedOperationMessage)
+		[JsonConstructor]
+		public OperationFailedPacket(string username, ApplicationType applicationType, OperationFailedData data)
 		{
 			MessageType = MessageType.OPERATION_FAILED;
-			Username = "SERVER";
-			ApplicationType = ApplicationType.SERVER;
-			Data = new OperationFailedData(failedOperationMessage);
-		}
-
-		[JsonConstructor]
-		public OperationFailedPacket(MessageType messageType, string username, ApplicationType applicationType, OperationFailedData data)
-		{
-			MessageType = messageType;
 			Username = username;
 			ApplicationType = applicationType;
 			Data = data;

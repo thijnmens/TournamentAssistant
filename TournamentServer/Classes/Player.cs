@@ -1,4 +1,5 @@
-﻿using TaUtilities.Interfaces;
+﻿using TaUtilities;
+using TaUtilities.Interfaces;
 
 namespace TournamentServer.Classes
 {
@@ -12,5 +13,16 @@ namespace TournamentServer.Classes
 
 		public string Username { get; }
 		public IRoute Connection { get; }
+		public bool Downloading { get; set; }
+
+		public bool DownloadMap(int mapCode)
+		{
+			if (Downloading)
+				return false;
+
+			Connection.SendMessage(PacketCreator.DownloadFilePacket(mapCode));
+			Downloading = true;
+			return true;
+		}
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using TaUtilities;
 using TaUtilities.Interfaces;
-using TaUtilities.Packets;
 using TournamentServer.Services;
 
 namespace TournamentServer.Classes
@@ -23,7 +23,7 @@ namespace TournamentServer.Classes
 
 		public void Close()
 		{
-			var lobbyLeftPacket = new LobbyLeftPacket();
+			var lobbyLeftPacket = PacketCreator.LobbyLeftPacket();
 			foreach (var user in Users)
 			{
 				user.Connection.SendMessage(lobbyLeftPacket);
@@ -56,11 +56,35 @@ namespace TournamentServer.Classes
 
 			if (!string.IsNullOrWhiteSpace(password))
 			{
-				if (Password == password)
+				if (Password != password)
 					return false;
 			}
 
 			return true;
+		}
+
+		public bool DownloadMap(int mapCode)
+		{
+			var success = true;
+
+			foreach (var user in Users)
+			{
+				var startedDownload = user.DownloadMap(mapCode);
+				if (!startedDownload)
+					success = false;
+			}
+
+			return success;
+		}
+
+		public bool DownloadStatus()
+		{
+			return !Users.Any(user => user.Downloading);
+		}
+
+		public void DownloadFinished(string username)
+		{
+			Users.First(user => user.Username == username).Downloading = false;
 		}
 	}
 }

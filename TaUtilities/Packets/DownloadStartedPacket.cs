@@ -4,12 +4,12 @@ using TaUtilities.Interfaces;
 
 namespace TaUtilities.Packets
 {
-	public class LobbyLeftPacket : IPacket
+	public class DownloadStartedPacket : IPacket
 	{
 		[JsonConstructor]
-		public LobbyLeftPacket(string username, ApplicationType applicationType)
+		public DownloadStartedPacket(string username, ApplicationType applicationType)
 		{
-			MessageType = MessageType.LOBBY_LEFT;
+			MessageType = MessageType.DOWNLOAD_STARTED;
 			Username = username;
 			ApplicationType = applicationType;
 		}

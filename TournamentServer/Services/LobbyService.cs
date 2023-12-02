@@ -1,4 +1,6 @@
-﻿using System;
+﻿// ReSharper disable ConvertIfStatementToReturnStatement
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TaUtilities;
@@ -57,7 +59,20 @@ namespace TournamentServer.Services
 		{
 			var lobby = GetLobbyByCode(packet.Data.LobbyCode);
 
-			return lobby.IsAuthorized(packet.Username, packet.Data.Password) && lobby.Leave(packet.Data.Username);
+			if (!lobby.IsAuthorized(packet.Username, packet.Data.Password))
+				return false;
+
+			return lobby.Leave(packet.Data.Username);
+		}
+
+		public static bool DownloadMap(StartDownloadPacket packet)
+		{
+			var lobby = GetLobbyByCode(packet.Data.LobbyCode);
+
+			if (!lobby.IsAuthorized(packet.Username, packet.Data.Password))
+				return false;
+
+			return lobby.DownloadMap(packet.Data.MapCode);
 		}
 
 		private static int GenerateLobbyCode()
@@ -73,6 +88,20 @@ namespace TournamentServer.Services
 		public static Lobby GetLobbyByCode(int lobbyCode)
 		{
 			return Lobbies.First(kvp => kvp.Key == lobbyCode).Value;
+		}
+
+		public static bool DownloadStatus(DownloadStatusPacket packet)
+		{
+			var lobby = GetLobbyByCode(packet.Data.LobbyCode);
+
+			return lobby.DownloadStatus();
+		}
+
+		public static void DownloadFinished(DownloadFinishedPacket packet)
+		{
+			var lobby = GetLobbyByCode(packet.Data.LobbyCode);
+
+			lobby.DownloadFinished(packet.Username);
 		}
 	}
 }

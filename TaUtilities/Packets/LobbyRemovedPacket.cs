@@ -7,18 +7,11 @@ namespace TaUtilities.Packets
 	public class LobbyRemovedPacket : IPacket
 	{
 		[JsonConstructor]
-		public LobbyRemovedPacket(MessageType messageType, string username, ApplicationType applicationType)
-		{
-			MessageType = messageType;
-			Username = username;
-			ApplicationType = applicationType;
-		}
-
-		public LobbyRemovedPacket()
+		public LobbyRemovedPacket(string username, ApplicationType applicationType)
 		{
 			MessageType = MessageType.LOBBY_REMOVED;
-			Username = "SERVER";
-			ApplicationType = ApplicationType.SERVER;
+			Username = username;
+			ApplicationType = applicationType;
 		}
 
 		[JsonConverter(typeof(StringEnumConverter))]

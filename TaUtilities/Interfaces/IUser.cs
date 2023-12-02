@@ -4,7 +4,8 @@
 	{
 		string Username { get; }
 		IRoute Connection { get; }
-
+		bool Downloading { get; set; }
 		string ToString();
+		bool DownloadMap(int mapCode);
 	}
 }

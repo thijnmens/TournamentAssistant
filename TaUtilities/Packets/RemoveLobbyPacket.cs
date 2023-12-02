@@ -7,20 +7,12 @@ namespace TaUtilities.Packets
 	public class RemoveLobbyPacket : IPacket
 	{
 		[JsonConstructor]
-		public RemoveLobbyPacket(MessageType messageType, string username, ApplicationType applicationType, RemoveLobbyData data)
+		public RemoveLobbyPacket(string username, ApplicationType applicationType, RemoveLobbyData data)
 		{
-			MessageType = messageType;
+			MessageType = MessageType.REMOVE_LOBBY;
 			Username = username;
 			ApplicationType = applicationType;
 			Data = data;
-		}
-
-		public RemoveLobbyPacket(int lobbyCode, string password)
-		{
-			MessageType = MessageType.REMOVE_LOBBY;
-			Username = "SERVER";
-			ApplicationType = ApplicationType.SERVER;
-			Data = new RemoveLobbyData(lobbyCode, password);
 		}
 
 		public RemoveLobbyData Data { get; }

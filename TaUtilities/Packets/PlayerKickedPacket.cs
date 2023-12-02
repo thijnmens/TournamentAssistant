@@ -7,18 +7,11 @@ namespace TaUtilities.Packets
 	public class PlayerKickedPacket : IPacket
 	{
 		[JsonConstructor]
-		public PlayerKickedPacket(MessageType messageType, string username, ApplicationType applicationType)
-		{
-			MessageType = messageType;
-			Username = username;
-			ApplicationType = applicationType;
-		}
-
-		public PlayerKickedPacket()
+		public PlayerKickedPacket(string username, ApplicationType applicationType)
 		{
 			MessageType = MessageType.PLAYER_KICKED;
-			Username = "SERVER";
-			ApplicationType = ApplicationType.SERVER;
+			Username = username;
+			ApplicationType = applicationType;
 		}
 
 		[JsonConverter(typeof(StringEnumConverter))]

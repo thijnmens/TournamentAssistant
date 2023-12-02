@@ -57,6 +57,26 @@
 		<Compile Include="Packets\CreateLobbyData.cs">
 			<DependentUpon>CreateLobbyPacket.cs</DependentUpon>
 		</Compile>
+		<Compile Include="Packets\DownloadFileData.cs">
+			<DependentUpon>DownloadFilePacket.cs</DependentUpon>
+		</Compile>
+		<Compile Include="Packets\DownloadFilePacket.cs"/>
+		<Compile Include="Packets\DownloadsFinishedData.cs">
+			<DependentUpon>DownloadsFinishedPacket.cs</DependentUpon>
+		</Compile>
+		<Compile Include="Packets\DownloadsFinishedPacket.cs"/>
+		<Compile Include="Packets\DownloadStatusData.cs">
+			<DependentUpon>DownloadStatusPacket.cs</DependentUpon>
+		</Compile>
+		<Compile Include="Packets\DownloadStatusPacket.cs"/>
+		<Compile Include="Packets\StartDownloadData.cs">
+			<DependentUpon>StartDownloadPacket.cs</DependentUpon>
+		</Compile>
+		<Compile Include="Packets\StartDownloadPacket.cs"/>
+		<Compile Include="Packets\DownloadFinishedData.cs">
+			<DependentUpon>DownloadFinishedPacket.cs</DependentUpon>
+		</Compile>
+		<Compile Include="Packets\DownloadFinishedPacket.cs"/>
 		<Compile Include="Packets\JoinLobbyData.cs">
 			<DependentUpon>JoinLobbyPacket.cs</DependentUpon>
 		</Compile>
@@ -76,6 +96,7 @@
 		<Compile Include="Packets\LobbyJoinedPacket.cs"/>
 		<Compile Include="Packets\LobbyLeftPacket.cs"/>
 		<Compile Include="Packets\LobbyRemovedPacket.cs"/>
+		<Compile Include="Packets\DownloadStartedPacket.cs"/>
 		<Compile Include="Packets\OperationFailedData.cs">
 			<DependentUpon>OperationFailedPacket.cs</DependentUpon>
 		</Compile>

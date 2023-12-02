@@ -7,18 +7,11 @@ namespace TaUtilities.Packets
 	public class LobbyJoinedPacket : IPacket
 	{
 		[JsonConstructor]
-		public LobbyJoinedPacket(MessageType messageType, string username, ApplicationType applicationType)
-		{
-			MessageType = messageType;
-			Username = username;
-			ApplicationType = applicationType;
-		}
-
-		public LobbyJoinedPacket()
+		public LobbyJoinedPacket(string username, ApplicationType applicationType)
 		{
 			MessageType = MessageType.LOBBY_JOINED;
-			Username = "SERVER";
-			ApplicationType = ApplicationType.SERVER;
+			Username = username;
+			ApplicationType = applicationType;
 		}
 
 		[JsonConverter(typeof(StringEnumConverter))]

@@ -4,15 +4,18 @@ using TaUtilities.Interfaces;
 
 namespace TaUtilities.Packets
 {
-	public class LobbyLeftPacket : IPacket
+	public class DownloadFinishedPacket : IPacket
 	{
 		[JsonConstructor]
-		public LobbyLeftPacket(string username, ApplicationType applicationType)
+		public DownloadFinishedPacket(string username, ApplicationType applicationType, DownloadFinishedData data)
 		{
-			MessageType = MessageType.LOBBY_LEFT;
+			MessageType = MessageType.DOWNLOAD_FINISHED;
 			Username = username;
 			ApplicationType = applicationType;
+			Data = data;
 		}
+
+		public DownloadFinishedData Data { get; }
 
 		[JsonConverter(typeof(StringEnumConverter))]
 		public MessageType MessageType { get; }
