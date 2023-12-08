@@ -95,6 +95,7 @@
 		<Compile Include="FormCreator.cs"/>
 		<Compile Include="Loader.cs"/>
 		<Compile Include="Patches.cs"/>
+		<Compile Include="Services\MessageService.cs"/>
 		<Compile Include="TournamentAssistant.cs"/>
 		<Compile Include="Properties\AssemblyInfo.cs"/>
 	</ItemGroup>

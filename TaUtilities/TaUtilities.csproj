@@ -96,7 +96,6 @@
 		<Compile Include="Packets\LobbyJoinedPacket.cs"/>
 		<Compile Include="Packets\LobbyLeftPacket.cs"/>
 		<Compile Include="Packets\LobbyRemovedPacket.cs"/>
-		<Compile Include="Packets\DownloadStartedPacket.cs"/>
 		<Compile Include="Packets\OperationFailedData.cs">
 			<DependentUpon>OperationFailedPacket.cs</DependentUpon>
 		</Compile>

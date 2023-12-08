@@ -17,7 +17,7 @@ namespace TournamentServer.Services
 			var createLobbyPacket = PacketConverter.Convert<CreateLobbyPacket>(data);
 
 			var lobbyCode = LobbyService.CreateLobby(createLobbyPacket);
-			return PacketCreator.LobbyCreatedPacket(lobbyCode);
+			return PacketCreator.LobbyCreatedPacket(lobbyCode, createLobbyPacket.Data.Password.Length != 0);
 		}
 
 		public static IPacket RemoveLobby(string data)
@@ -78,7 +78,7 @@ namespace TournamentServer.Services
 			if (!downloadedMap)
 				return PacketCreator.OperationFailedPacket(data);
 
-			return PacketCreator.MapDownloadedPacket();
+			return null;
 		}
 
 		public static void DownloadFinished(string data)

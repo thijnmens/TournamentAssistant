@@ -2,6 +2,7 @@
 using Steamworks;
 using TaUtilities;
 using TaUtilities.Interfaces;
+using TournamentAssistant.Services;
 using WebSocketSharp;
 
 namespace TournamentAssistant
@@ -62,20 +63,27 @@ namespace TournamentAssistant
 			{
 				case MessageType.UNKNOWN_MESSAGE:
 					TournamentAssistant.ModEntry.Logger.Warning($"Send an unknown message to the server:\n`{e.Data}`");
-					break;
+					return;
 
 				case MessageType.OPERATION_FAILED:
 					TournamentAssistant.ModEntry.Logger.Error($"An operation on the server failed:\n`{e.Data}`");
-					break;
+					return;
 
 				case MessageType.LOBBY_JOINED:
 					TournamentAssistant.ModEntry.Logger.Log($"Successfully joined lobby with code `{LobbyCode}` and username `{PacketCreator.Username}`");
-					break;
+					return;
 
 				case MessageType.LOBBY_LEFT:
-					TournamentAssistant.ModEntry.Logger.Log("Left lobby`");
-					break;
+					TournamentAssistant.ModEntry.Logger.Log("Left lobby");
+					return;
 
+				case MessageType.DOWNLOAD_FILE:
+					MessageService.DownloadFile(e.Data, LobbyCode);
+					return;
+
+				case MessageType.DOWNLOADS_FINISHED:
+				case MessageType.DOWNLOAD_STATUS:
+				case MessageType.START_DOWNLOAD:
 				case MessageType.CREATE_LOBBY:
 				case MessageType.LOBBY_CREATED:
 				case MessageType.LOBBY_REMOVED:
@@ -86,7 +94,7 @@ namespace TournamentAssistant
 				case MessageType.KICK_PLAYER:
 				default:
 					SendMessage(PacketCreator.UnknownMessagePacket(e.Data));
-					break;
+					return;
 			}
 		}
 

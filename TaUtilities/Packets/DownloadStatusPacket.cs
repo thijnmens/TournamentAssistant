@@ -9,7 +9,7 @@ namespace TaUtilities.Packets
 		[JsonConstructor]
 		public DownloadStatusPacket(string username, ApplicationType applicationType, DownloadStatusData data)
 		{
-			MessageType = MessageType.DOWNLOAD_FINISHED;
+			MessageType = MessageType.DOWNLOAD_STATUS;
 			Username = username;
 			ApplicationType = applicationType;
 			Data = data;

@@ -12,9 +12,9 @@ namespace TaUtilities
 			return new JoinLobbyPacket(Username, ApplicationType, new JoinLobbyData(lobbyCode, password));
 		}
 
-		public static LobbyCreatedPacket LobbyCreatedPacket(int lobbyCode)
+		public static LobbyCreatedPacket LobbyCreatedPacket(int lobbyCode, bool usingPassword)
 		{
-			return new LobbyCreatedPacket(Username, ApplicationType, new LobbyCreatedData(lobbyCode));
+			return new LobbyCreatedPacket(Username, ApplicationType, new LobbyCreatedData(lobbyCode, usingPassword));
 		}
 
 		public static UnknownMessagePacket UnknownMessagePacket(string receivedMessage)
@@ -25,11 +25,6 @@ namespace TaUtilities
 		public static StartDownloadPacket DownloadMapPacket(int lobbyCode, int mapCode, string password)
 		{
 			return new StartDownloadPacket(Username, ApplicationType, new StartDownloadData(lobbyCode, mapCode, password));
-		}
-
-		public static DownloadStartedPacket MapDownloadedPacket()
-		{
-			return new DownloadStartedPacket(Username, ApplicationType);
 		}
 
 		public static DownloadFilePacket DownloadFilePacket(int mapCode)
@@ -70,6 +65,21 @@ namespace TaUtilities
 		public static DownloadsFinishedPacket DownloadsFinishedPacket(bool downloadStatus)
 		{
 			return new DownloadsFinishedPacket(Username, ApplicationType, new DownloadsFinishedData(downloadStatus));
+		}
+
+		public static DownloadFinishedPacket DownloadFinishedPacket(int lobbyCode)
+		{
+			return new DownloadFinishedPacket(Username, ApplicationType, new DownloadFinishedData(lobbyCode));
+		}
+
+		public static CreateLobbyPacket CreateLobbyPacket(string password = "")
+		{
+			return new CreateLobbyPacket(Username, ApplicationType, new CreateLobbyData(password));
+		}
+
+		public static StartDownloadPacket StartDownloadPacket(int lobbyCode, int mapCode, string password = "")
+		{
+			return new StartDownloadPacket(Username, ApplicationType, new StartDownloadData(lobbyCode, mapCode, password));
 		}
 	}
 }

@@ -11,11 +11,17 @@ namespace TournamentServer.Routes
 	{
 		public void SendMessage(IPacket packet)
 		{
+			if (packet == null)
+				return;
+
 			SendAsync(packet.ToJson(), _ => { });
 		}
 
 		public void SendMessage(IPacket packet, Action<bool> callback)
 		{
+			if (packet == null)
+				return;
+
 			SendAsync(packet.ToJson(), callback);
 		}
 
@@ -70,7 +76,6 @@ namespace TournamentServer.Routes
 
 				case MessageType.DOWNLOADS_FINISHED:
 				case MessageType.DOWNLOAD_FILE:
-				case MessageType.DOWNLOAD_STARTED:
 				case MessageType.LOBBY_CREATED:
 				case MessageType.LOBBY_REMOVED:
 				case MessageType.LOBBY_JOINED:
