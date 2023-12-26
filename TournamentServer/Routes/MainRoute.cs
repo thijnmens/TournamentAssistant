@@ -74,6 +74,14 @@ namespace TournamentServer.Routes
 					SendMessage(MessageService.DownloadStatus(e.Data));
 					return;
 
+				case MessageType.LOAD_MAP:
+					MessageService.LoadMap(e.Data);
+					return;
+
+				case MessageType.START_MAP:
+					MessageService.StartMap(e.Data);
+					return;
+
 				case MessageType.DOWNLOADS_FINISHED:
 				case MessageType.DOWNLOAD_FILE:
 				case MessageType.LOBBY_CREATED:

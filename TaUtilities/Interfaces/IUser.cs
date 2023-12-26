@@ -7,5 +7,7 @@
 		bool Downloading { get; set; }
 		string ToString();
 		bool DownloadMap(int mapCode);
+		void LoadMap(int mapCode);
+		void StartMap();
 	}
 }

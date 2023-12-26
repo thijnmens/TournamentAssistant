@@ -1,4 +1,5 @@
-﻿using TaUtilities.Packets;
+﻿using TaUtilities.Interfaces;
+using TaUtilities.Packets;
 
 namespace TaUtilities
 {
@@ -80,6 +81,21 @@ namespace TaUtilities
 		public static StartDownloadPacket StartDownloadPacket(int lobbyCode, int mapCode, string password = "")
 		{
 			return new StartDownloadPacket(Username, ApplicationType, new StartDownloadData(lobbyCode, mapCode, password));
+		}
+
+		public static LeaveLobbyPacket LeaveLobbyPacket(int lobbyCode)
+		{
+			return new LeaveLobbyPacket(Username, ApplicationType, new LeaveLobbyData(lobbyCode));
+		}
+
+		public static LoadMapPacket LoadMapPacket(int lobbyCode, int mapCode, string password = "")
+		{
+			return new LoadMapPacket(Username, ApplicationType, new LoadMapData(lobbyCode, mapCode, password));
+		}
+
+		public static StartMapPacket StartMapPacket(int lobbyCode, string password = "")
+		{
+			return new StartMapPacket(Username, ApplicationType, new StartMapData(lobbyCode, password));
 		}
 	}
 }

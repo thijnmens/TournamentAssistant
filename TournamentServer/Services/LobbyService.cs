@@ -103,5 +103,25 @@ namespace TournamentServer.Services
 
 			lobby.DownloadFinished(packet.Username);
 		}
+
+		public static void LoadMap(LoadMapPacket packet)
+		{
+			var lobby = GetLobbyByCode(packet.Data.LobbyCode);
+
+			if (!lobby.IsAuthorized(packet.Username, packet.Data.Password))
+				return;
+
+			lobby.LoadMap(packet.Data.MapCode);
+		}
+
+		public static void StartMap(StartMapPacket packet)
+		{
+			var lobby = GetLobbyByCode(packet.Data.LobbyCode);
+
+			if (!lobby.IsAuthorized(packet.Username, packet.Data.Password))
+				return;
+
+			lobby.StartMap();
+		}
 	}
 }

@@ -69,6 +69,10 @@
 			<DependentUpon>DownloadStatusPacket.cs</DependentUpon>
 		</Compile>
 		<Compile Include="Packets\DownloadStatusPacket.cs"/>
+		<Compile Include="Packets\LoadMapData.cs">
+		  <DependentUpon>LoadMapPacket.cs</DependentUpon>
+		</Compile>
+		<Compile Include="Packets\LoadMapPacket.cs" />
 		<Compile Include="Packets\StartDownloadData.cs">
 			<DependentUpon>StartDownloadPacket.cs</DependentUpon>
 		</Compile>
@@ -105,6 +109,10 @@
 			<DependentUpon>RemoveLobbyPacket.cs</DependentUpon>
 		</Compile>
 		<Compile Include="Packets\RemoveLobbyPacket.cs"/>
+		<Compile Include="Packets\StartMapData.cs">
+		  <DependentUpon>StartMapPacket.cs</DependentUpon>
+		</Compile>
+		<Compile Include="Packets\StartMapPacket.cs" />
 		<Compile Include="Packets\UnknownMessageData.cs">
 			<DependentUpon>UnknownMessagePacket.cs</DependentUpon>
 		</Compile>

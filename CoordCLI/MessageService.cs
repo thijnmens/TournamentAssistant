@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using TaUtilities;
+using TaUtilities.Interfaces;
 using TaUtilities.Packets;
 
 namespace CoordCLI
@@ -123,6 +124,28 @@ namespace CoordCLI
 
 			var password = Program.WriteQuestion("Password [Leave empty for no password]: ");
 			return PacketCreator.StartDownloadPacket(lobbyCode, mapCode, password);
+		}
+
+		public static LeaveLobbyPacket LeaveLobby(int lobbyCode)
+		{
+			return PacketCreator.LeaveLobbyPacket(lobbyCode);
+		}
+
+		public static LoadMapPacket LoadMap(int lobbyCode)
+		{
+			var isInt = int.TryParse(Program.WriteQuestion("Map code: "), out var mapCode);
+			if (!isInt)
+			{
+				Program.WriteWarning($"{mapCode} could not be inverted to an integer, is it a number?");
+				return LoadMap(lobbyCode);
+			}
+
+			return PacketCreator.LoadMapPacket(lobbyCode, mapCode);
+		}
+
+		public static StartMapPacket StartMap(int lobbyCode)
+		{
+			return PacketCreator.StartMapPacket(lobbyCode);
 		}
 	}
 }

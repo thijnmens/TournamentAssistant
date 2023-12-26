@@ -24,5 +24,15 @@ namespace TournamentServer.Classes
 			Downloading = true;
 			return true;
 		}
+
+		public void LoadMap(int mapCode)
+		{
+			Connection.SendMessage(PacketCreator.LoadMapPacket(0, mapCode));
+		}
+
+		public void StartMap()
+		{
+			Connection.SendMessage(PacketCreator.StartMapPacket(0));
+		}
 	}
 }

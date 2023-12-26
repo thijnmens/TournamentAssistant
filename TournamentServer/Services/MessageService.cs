@@ -94,5 +94,17 @@ namespace TournamentServer.Services
 
 			return PacketCreator.DownloadsFinishedPacket(downloadStatus);
 		}
+
+		public static void LoadMap(string data)
+		{
+			var loadMapPacket = PacketConverter.Convert<LoadMapPacket>(data);
+			LobbyService.LoadMap(loadMapPacket);
+		}
+
+		public static void StartMap(string data)
+		{
+			var startMapPacket = PacketConverter.Convert<StartMapPacket>(data);
+			LobbyService.StartMap(startMapPacket);
+		}
 	}
 }

@@ -81,6 +81,14 @@ namespace TournamentAssistant
 					MessageService.DownloadFile(e.Data, LobbyCode);
 					return;
 
+				case MessageType.LOAD_MAP:
+					MessageService.LoadMap(e.Data);
+					return;
+
+				case MessageType.START_MAP:
+					MessageService.StartMap();
+					return;
+
 				case MessageType.DOWNLOADS_FINISHED:
 				case MessageType.DOWNLOAD_STATUS:
 				case MessageType.START_DOWNLOAD:

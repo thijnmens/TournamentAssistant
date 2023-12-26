@@ -1,6 +1,8 @@
-﻿using System.IO.Compression;
+﻿using System.IO;
+using System.IO.Compression;
 using System.Net;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using TaUtilities;
 using TaUtilities.Packets;
 
@@ -27,6 +29,21 @@ namespace TournamentAssistant.Services
 
 				TournamentAssistant.Connection.SendMessage(PacketCreator.DownloadFinishedPacket(lobbyCode));
 			});
+		}
+
+		public static void LoadMap(string data)
+		{
+			var loadMapPacket = PacketConverter.Convert<LoadMapPacket>(data);
+			TournamentAssistant.ModEntry.Logger.Log($"Loading map with code `{loadMapPacket.Data.MapCode}`");
+
+			ADOBase.controller.LoadCustomLevel($"./CustomSongs/{loadMapPacket.Data.MapCode}/main.adofai");
+			ADOBase.controller.LockInput(100000000000f);
+		}
+
+		public static void StartMap()
+		{
+			ADOBase.controller.UnlockInput();
+			//SendKeys.Send(" ");
 		}
 	}
 }

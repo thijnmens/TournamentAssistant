@@ -86,5 +86,23 @@ namespace TournamentServer.Classes
 		{
 			Users.First(user => user.Username == username).Downloading = false;
 		}
+
+		public void LoadMap(int mapCode)
+		{
+			foreach (var user in Users)
+			{
+				if (user.GetType() == typeof(Player))
+					user.LoadMap(mapCode);
+			}
+		}
+
+		public void StartMap()
+		{
+			foreach (var user in Users)
+			{
+				if (user.GetType() == typeof(Player))
+					user.StartMap();
+			}
+		}
 	}
 }
